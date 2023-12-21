@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9110DEC12B33F9A500AE3AE9 /* NeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110DEC02B33F9A500AE3AE9 /* NeedView.swift */; };
 		91926A382B324F9D0096D1DE /* Wants_NeedsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91926A372B324F9D0096D1DE /* Wants_NeedsApp.swift */; };
 		91926A3A2B324F9E0096D1DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91926A392B324F9E0096D1DE /* ContentView.swift */; };
 		91926A3C2B324F9F0096D1DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91926A3B2B324F9F0096D1DE /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9110DEC02B33F9A500AE3AE9 /* NeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedView.swift; sourceTree = "<group>"; };
 		91926A342B324F9D0096D1DE /* Wants+Needs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wants+Needs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91926A372B324F9D0096D1DE /* Wants_NeedsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wants_NeedsApp.swift; sourceTree = "<group>"; };
 		91926A392B324F9E0096D1DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				91926A462B32502F0096D1DE /* WantsView.swift */,
 				91926A482B3250370096D1DE /* NeedsView.swift */,
 				91926A4B2B32548D0096D1DE /* WantView.swift */,
+				9110DEC02B33F9A500AE3AE9 /* NeedView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -156,6 +159,7 @@
 			files = (
 				91926A492B3250370096D1DE /* NeedsView.swift in Sources */,
 				91926A3A2B324F9E0096D1DE /* ContentView.swift in Sources */,
+				9110DEC12B33F9A500AE3AE9 /* NeedView.swift in Sources */,
 				91926A382B324F9D0096D1DE /* Wants_NeedsApp.swift in Sources */,
 				91926A472B32502F0096D1DE /* WantsView.swift in Sources */,
 				91926A4C2B32548D0096D1DE /* WantView.swift in Sources */,
