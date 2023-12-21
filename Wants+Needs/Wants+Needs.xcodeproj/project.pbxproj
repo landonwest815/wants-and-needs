@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9110DEC12B33F9A500AE3AE9 /* NeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110DEC02B33F9A500AE3AE9 /* NeedView.swift */; };
+		9110DEC32B340CC600AE3AE9 /* AddWantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110DEC22B340CC600AE3AE9 /* AddWantView.swift */; };
+		9110DEC82B3411D700AE3AE9 /* Want.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110DEC72B3411D700AE3AE9 /* Want.swift */; };
 		91926A382B324F9D0096D1DE /* Wants_NeedsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91926A372B324F9D0096D1DE /* Wants_NeedsApp.swift */; };
 		91926A3A2B324F9E0096D1DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91926A392B324F9E0096D1DE /* ContentView.swift */; };
 		91926A3C2B324F9F0096D1DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91926A3B2B324F9F0096D1DE /* Assets.xcassets */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		9110DEC02B33F9A500AE3AE9 /* NeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedView.swift; sourceTree = "<group>"; };
+		9110DEC22B340CC600AE3AE9 /* AddWantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWantView.swift; sourceTree = "<group>"; };
+		9110DEC72B3411D700AE3AE9 /* Want.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Want.swift; sourceTree = "<group>"; };
 		91926A342B324F9D0096D1DE /* Wants+Needs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wants+Needs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91926A372B324F9D0096D1DE /* Wants_NeedsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wants_NeedsApp.swift; sourceTree = "<group>"; };
 		91926A392B324F9E0096D1DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -40,9 +44,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9110DEC42B34106E00AE3AE9 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				9110DEC72B3411D700AE3AE9 /* Want.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		91926A2B2B324F9D0096D1DE = {
 			isa = PBXGroup;
 			children = (
+				9110DEC42B34106E00AE3AE9 /* Data */,
 				91926A452B32501E0096D1DE /* Views */,
 				91926A362B324F9D0096D1DE /* Wants+Needs */,
 				91926A352B324F9D0096D1DE /* Products */,
@@ -83,6 +96,7 @@
 				91926A482B3250370096D1DE /* NeedsView.swift */,
 				91926A4B2B32548D0096D1DE /* WantView.swift */,
 				9110DEC02B33F9A500AE3AE9 /* NeedView.swift */,
+				9110DEC22B340CC600AE3AE9 /* AddWantView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -158,7 +172,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				91926A492B3250370096D1DE /* NeedsView.swift in Sources */,
+				9110DEC82B3411D700AE3AE9 /* Want.swift in Sources */,
 				91926A3A2B324F9E0096D1DE /* ContentView.swift in Sources */,
+				9110DEC32B340CC600AE3AE9 /* AddWantView.swift in Sources */,
 				9110DEC12B33F9A500AE3AE9 /* NeedView.swift in Sources */,
 				91926A382B324F9D0096D1DE /* Wants_NeedsApp.swift in Sources */,
 				91926A472B32502F0096D1DE /* WantsView.swift in Sources */,

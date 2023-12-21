@@ -23,6 +23,30 @@ struct NeedsView: View {
                     .onDelete(perform: delete)
                 }
                 .navigationTitle("Needs")
+                .toolbar {
+                    // Add
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        // MARK: - Add Want
+                            Button {
+                                //isShowingSheet.toggle()
+                            } label: {
+                                Image(systemName: "plus.circle")
+                            }
+//                            .sheet(isPresented: $isShowingSheet) {
+//                                AddWantView()
+//                                    .presentationDragIndicator(.visible)
+//                                    .presentationDetents([.large])
+//                            }
+                        }
+                    // Cancel
+                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "gear")
+                            }
+                        }
+                }
             }
         }
 

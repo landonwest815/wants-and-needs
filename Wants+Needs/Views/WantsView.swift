@@ -4,32 +4,78 @@
 //
 //  Created by Landon West on 12/19/23.
 //
+//  This class represents the View for Wants.
+//  Wants can be added and deleted from here
+//  and will update in real time. Adding wants
+//  will call the AddWantView view.
+//
 
 import SwiftUI
+import SwiftData
 
 struct WantsView: View {
     
-    @State private var wants = ["Playstation 5", "Wilson Evo Basketball", "Raising Cane's"]
+    // Swift Data
+    @Environment(\.modelContext) var context
+    @Query var wants: [Want]
+    
+    // Class Data
+    @State private var isShowingSheet: Bool = false
 
-        var body: some View {
-            NavigationStack {
+    // UI
+    var body: some View {
+        
+        NavigationStack {
+            
+            // MARK: - List of Wants
                 List {
                     ForEach(wants, id: \.self) { want in
-                        //Text(want)
-                        NavigationLink(want) {
-                            WantView(name: want)
+                        // If a want is tapped, bring up its information using WantView
+                        NavigationLink(want.want) {
+                            WantView(want: want)
                         }
                     }
                     .onDelete(perform: delete)
                 }
                 .navigationTitle("Wants")
-            }
+                .toolbar {
+                    
+                    
+                }
+                .toolbar {
+                    // Add
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        // MARK: - Add Want
+                            Button {
+                                isShowingSheet.toggle()
+                            } label: {
+                                Image(systemName: "plus.circle")
+                            }
+                            .sheet(isPresented: $isShowingSheet) {
+                                AddWantView()
+                                    .presentationDragIndicator(.visible)
+                                    .presentationDetents([.large])
+                            }
+                        }
+                    // Cancel
+                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "gear")
+                            }
+                        }
+                }
         }
+    }
 
-        func delete(at offsets: IndexSet) {
-            wants.remove(atOffsets: offsets)
+    // MARK: - Delete Want
+    func delete(_ indexSet: IndexSet) {
+        for i in indexSet {
+            let want = wants[i]
+            context.delete(want)
         }
-    
+    }
 }
 
 #Preview {
