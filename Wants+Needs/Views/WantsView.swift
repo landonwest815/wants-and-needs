@@ -60,7 +60,7 @@ struct WantsView: View {
                     // Cancel
                     ToolbarItemGroup(placement: .navigationBarLeading) {
                             Button {
-                                
+                                SettingsView()
                             } label: {
                                 Image(systemName: "gear")
                             }

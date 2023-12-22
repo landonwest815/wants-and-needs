@@ -41,24 +41,25 @@ struct NeedsView: View {
                     // Add
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         // MARK: - Add Need
-                            Button {
-                                isShowingSheet.toggle()
-                            } label: {
-                                Image(systemName: "plus.circle")
-                            }
-                            .sheet(isPresented: $isShowingSheet) {
-                                AddListItemView(isWant: false)
-                                    .presentationDragIndicator(.visible)
-                                    .presentationDetents([.large])
-                            }
+                        Button {
+                            isShowingSheet.toggle()
+                        } label: {
+                            Image(systemName: "plus.circle")
                         }
+                        .sheet(isPresented: $isShowingSheet) {
+                            AddListItemView(isWant: false)
+                                .presentationDragIndicator(.visible)
+                                .presentationDetents([.large])
+                        }
+                    }
                     // Cancel
                     ToolbarItemGroup(placement: .navigationBarLeading) {
-                            Button {
-                                
-                            } label: {
-                                Image(systemName: "gear")
-                            }
+                        NavigationLink(destination: {
+                            SettingsView()
+                        }, label: {
+                            Image(systemName: "gear")
+                        })
+                        
                         }
                 }
         }
