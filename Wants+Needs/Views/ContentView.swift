@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     var body: some View {
@@ -28,5 +29,9 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+       let container = try! ModelContainer(for: ListItem.self, configurations: config)
+
+    return ContentView()
+           .modelContainer(container)
 }

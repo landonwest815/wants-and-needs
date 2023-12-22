@@ -7,7 +7,7 @@
 //  This class represents the View for Wants.
 //  Wants can be added and deleted from here
 //  and will update in real time. Adding wants
-//  will call the AddWantView view.
+//  will call the AddListItemView.
 //
 
 import SwiftUI
@@ -17,7 +17,11 @@ struct WantsView: View {
     
     // Swift Data
     @Environment(\.modelContext) var context
-    @Query var wants: [Want]
+    
+        // Wants in data
+        @Query(filter: #Predicate<ListItem> { item in
+            item.isWant == true
+        }) var wants: [ListItem]
     
     // Class Data
     @State private var isShowingSheet: Bool = false
@@ -31,17 +35,13 @@ struct WantsView: View {
                 List {
                     ForEach(wants, id: \.self) { want in
                         // If a want is tapped, bring up its information using WantView
-                        NavigationLink(want.want) {
-                            WantView(want: want)
+                        NavigationLink(want.title) {
+                            ListItemView(item: want)
                         }
                     }
                     .onDelete(perform: delete)
                 }
                 .navigationTitle("Wants")
-                .toolbar {
-                    
-                    
-                }
                 .toolbar {
                     // Add
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -52,7 +52,7 @@ struct WantsView: View {
                                 Image(systemName: "plus.circle")
                             }
                             .sheet(isPresented: $isShowingSheet) {
-                                AddWantView()
+                                AddListItemView(isWant: true)
                                     .presentationDragIndicator(.visible)
                                     .presentationDetents([.large])
                             }
@@ -79,5 +79,9 @@ struct WantsView: View {
 }
 
 #Preview {
-    WantsView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+       let container = try! ModelContainer(for: ListItem.self, configurations: config)
+
+    return WantsView()
+           .modelContainer(container)
 }

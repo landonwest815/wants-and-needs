@@ -6,18 +6,32 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct NeedsView: View {
     
-    @State private var needs = ["Basketball", "Curry 11 'Jackie Chan'", "Cargo Pants"]
+    // Swift Data
+    @Environment(\.modelContext) var context
+        
+        // Needs in data
+        @Query(filter: #Predicate<ListItem> { item in
+            item.isWant == false
+        }) var needs: [ListItem]
+    
+    // Class Data
+    @State private var isShowingSheet: Bool = false
 
-        var body: some View {
-            NavigationStack {
+    // UI
+    var body: some View {
+        
+        NavigationStack {
+            
+            // MARK: - List of Needs
                 List {
                     ForEach(needs, id: \.self) { need in
-                        //Text(want)
-                        NavigationLink(need) {
-                            NeedView(name: need)
+                        // If a need is tapped, bring up its information using NeedView
+                        NavigationLink(need.title) {
+                            ListItemView(item: need)
                         }
                     }
                     .onDelete(perform: delete)
@@ -26,17 +40,17 @@ struct NeedsView: View {
                 .toolbar {
                     // Add
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        // MARK: - Add Want
+                        // MARK: - Add Need
                             Button {
-                                //isShowingSheet.toggle()
+                                isShowingSheet.toggle()
                             } label: {
                                 Image(systemName: "plus.circle")
                             }
-//                            .sheet(isPresented: $isShowingSheet) {
-//                                AddWantView()
-//                                    .presentationDragIndicator(.visible)
-//                                    .presentationDetents([.large])
-//                            }
+                            .sheet(isPresented: $isShowingSheet) {
+                                AddListItemView(isWant: false)
+                                    .presentationDragIndicator(.visible)
+                                    .presentationDetents([.large])
+                            }
                         }
                     // Cancel
                     ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -47,15 +61,22 @@ struct NeedsView: View {
                             }
                         }
                 }
-            }
         }
+    }
 
-        func delete(at offsets: IndexSet) {
-            needs.remove(atOffsets: offsets)
+    // MARK: - Delete Need
+    func delete(_ indexSet: IndexSet) {
+        for i in indexSet {
+            let need = needs[i]
+            context.delete(need)
         }
-    
+    }
 }
 
 #Preview {
-    NeedsView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+       let container = try! ModelContainer(for: ListItem.self, configurations: config)
+
+    return NeedsView()
+           .modelContainer(container)
 }

@@ -1,26 +1,26 @@
 //
-//  WantView.swift
+//  ListItemView.swift
 //  Wants+Needs
 //
-//  Created by Landon West on 12/19/23.
+//  Created by Landon West on 12/21/23.
 //
 
 import SwiftUI
 import SwiftData
 import PhotosUI
 
-struct WantView: View {
+struct ListItemView: View {
     
     // SwiftData
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
-    
+
     // Passed in want
-    let want: ListItem
+    let item: ListItem
     
     // User Inputs
-    @State private var wantTextField: String = ""
-    @State private var wantItem: PhotosPickerItem?
+    @State private var titleTextField: String = ""
+    @State private var itemImage: PhotosPickerItem?
     @State private var infoTextField: String = ""
     
     // UI
@@ -30,21 +30,21 @@ struct WantView: View {
             
             Form {
                 
-                // MARK: - Want Section
+                // MARK: - Title Section
                     Section {
-                        TextField("", text: $wantTextField)
+                        TextField("", text: $titleTextField)
                             .multilineTextAlignment(.leading)
-                            .onChange(of: wantTextField) {
-                                want.title = wantTextField
+                            .onChange(of: titleTextField) {
+                                item.title = titleTextField
                             }
                     }
                     header: {
-                        Text("Want")
+                        Text(item.isWant ? "Want" : "Need")
                     }
                 
                 // MARK: - Media Section
                     Section {
-                        if let imageData = want.itemImage,
+                        if let imageData = item.itemImage,
                            let uiImage = UIImage(data: imageData) {
                             Image(uiImage: uiImage)
                                 .resizable()
@@ -52,15 +52,15 @@ struct WantView: View {
                                 .frame(maxWidth: .infinity, maxHeight: 300)
                             }
                         
-                        PhotosPicker(selection: $wantItem, matching: .images) {
+                        PhotosPicker(selection: $itemImage, matching: .images) {
                             Label("Select image", systemImage: "photo")
                         }
                         
-                        if want.itemImage != nil {
+                        if item.itemImage != nil {
                             Button(role: .destructive) {
                                 withAnimation {
-                                    wantItem = nil
-                                    want.itemImage = nil
+                                    itemImage = nil
+                                    item.itemImage = nil
                                 }
                             } label: {
                                 Label("Remove Image", systemImage: "xmark")
@@ -72,10 +72,10 @@ struct WantView: View {
                     header: {
                         Text("Media")
                     }
-                    .onChange(of: wantItem) {
+                    .onChange(of: itemImage) {
                         Task {
-                            if let loaded = try? await wantItem?.loadTransferable(type: Data.self) {
-                                want.itemImage = loaded
+                            if let loaded = try? await itemImage?.loadTransferable(type: Data.self) {
+                                item.itemImage = loaded
                             } else {
                                 print("Failed")
                             }
@@ -87,7 +87,7 @@ struct WantView: View {
                     Section {
                         TextField("", text: $infoTextField)
                             .onChange(of: infoTextField) {
-                                want.info = infoTextField
+                                item.info = infoTextField
                             }
                             .multilineTextAlignment(.leading)
                             .frame(height: 100, alignment: .top)
@@ -97,10 +97,10 @@ struct WantView: View {
                     }
                     
                 } //: Form
-                .navigationBarTitle(want.title)
+                .navigationBarTitle(item.title)
                 .toolbar {
                     Button {
-                        context.delete(want)
+                        context.delete(item)
                         dismiss()
                     } label: {
                         Image(systemName: "trash")
@@ -111,8 +111,8 @@ struct WantView: View {
             } //: NavigationStack
             .onAppear() {
                 // Update with Pre-Existing Data
-                wantTextField = want.title
-                infoTextField = want.info ?? ""
+                titleTextField = item.title
+                infoTextField = item.info ?? ""
             }
     }
 }
@@ -121,7 +121,7 @@ struct WantView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
        let container = try! ModelContainer(for: ListItem.self, configurations: config)
 
-    let want = ListItem(isWant: true, title: "Test User")
-       return WantView(want: want)
+    let item = ListItem(isWant: true, title: "Test Item")
+    return ListItemView(item: item)
            .modelContainer(container)
 }
