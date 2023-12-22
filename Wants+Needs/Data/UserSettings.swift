@@ -11,7 +11,9 @@ import SwiftData
 
 @Model
 class UserSettings {
-    //var accentColor: Color = Color.purple
+    var accentColor: String
     
-    init() {}
+    init() {
+        accentColor = "FFFFFF"
+    }
 }

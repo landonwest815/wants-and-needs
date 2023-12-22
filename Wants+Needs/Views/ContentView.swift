@@ -11,9 +11,8 @@ import SwiftData
 struct ContentView: View {
     
     @Environment(\.modelContext) var context
-    //@Query var userSettingsArray: [UserSettings]
-    
-    @State private var accentColor: Color = .blue
+    @Query var userSettingsArray: [UserSettings]
+        
     var body: some View {
         
         ZStack {
@@ -29,7 +28,7 @@ struct ContentView: View {
                         Text("Needs")
                     } 
             }
-            .accentColor(accentColor)
+            .accentColor(Color(hex: userSettingsArray.first?.accentColor ?? "FF0000"))
         }
         .onAppear() {
             handleUserSettings()
@@ -37,18 +36,20 @@ struct ContentView: View {
     }
     
     private func handleUserSettings() {
-//        if let userSettings = userSettingsArray.first {
-//            accentColor = userSettings.accentColor
-//        } else {
-//            let newUserSettings = UserSettings()
-//            context.insert(newUserSettings)
-//        }
+        if let userSettings = userSettingsArray.first {
+            userSettings.accentColor = userSettingsArray.first?.accentColor ?? "FF0000"
+        } else {
+            let newUserSettings = UserSettings()
+            context.insert(newUserSettings)
+        }
     }
 }
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-       let container = try! ModelContainer(for: ListItem.self, configurations: config)
+    let container = try! ModelContainer(for: UserSettings.self, ListItem.self, configurations: config)
+    let userSettings =  UserSettings()
+    container.mainContext.insert(userSettings)
 
     return ContentView()
            .modelContainer(container)

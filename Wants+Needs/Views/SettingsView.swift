@@ -14,7 +14,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
     
-    //@Query var userSettingsArray: [UserSettings]
+    @Query var userSettingsArray: [UserSettings]
     @State private var accentColor: Color = .purple
 
     private let alternateAppIcons: [String] = [
@@ -93,19 +93,31 @@ struct SettingsView: View {
             .onAppear() {
                 pullFromUserSettings()
             }
+            .onChange(of: accentColor) {
+                    updateAccentColorInUserSettings()
+                }
         }
     
+    private func updateAccentColorInUserSettings() {
+        if let userSettings = userSettingsArray.first {
+            userSettings.accentColor = accentColor.toHex() ?? "FFFFFF"
+        }
+    }
+    
     private func pullFromUserSettings() {
-//        if let userSettings = userSettingsArray.first {
-//                    accentColor = userSettings.accentColor
-//                }
+        if let userSettings = userSettingsArray.first {
+            accentColor = Color(hex: userSettings.accentColor) ?? .red
+                }
     }
         
 }
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-       let container = try! ModelContainer(for: ListItem.self, configurations: config)
+       let container = try! ModelContainer(for: ListItem.self, UserSettings.self, configurations: config)
+    let userSettings =  UserSettings()
+    userSettings.accentColor = "FFFFFF"
+    container.mainContext.insert(userSettings)
 
     return SettingsView()
            .modelContainer(container)

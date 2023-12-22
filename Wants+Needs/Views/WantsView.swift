@@ -81,6 +81,8 @@ struct WantsView: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
        let container = try! ModelContainer(for: ListItem.self, configurations: config)
+    let item =  ListItem(isWant: true, title: "basketball")
+    container.mainContext.insert(item)
 
     return WantsView()
            .modelContainer(container)
