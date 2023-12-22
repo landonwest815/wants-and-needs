@@ -11,6 +11,8 @@
 		9110DECC2B35263300AE3AE9 /* AddListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110DECB2B35263300AE3AE9 /* AddListItemView.swift */; };
 		9110DECE2B3532F600AE3AE9 /* ListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110DECD2B3532F600AE3AE9 /* ListItemView.swift */; };
 		9110DED02B353F5A00AE3AE9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110DECF2B353F5A00AE3AE9 /* SettingsView.swift */; };
+		9110DED22B35515C00AE3AE9 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110DED12B35515C00AE3AE9 /* ColorPickerView.swift */; };
+		9110DED42B3558BE00AE3AE9 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9110DED32B3558BE00AE3AE9 /* UserSettings.swift */; };
 		91926A382B324F9D0096D1DE /* Wants_NeedsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91926A372B324F9D0096D1DE /* Wants_NeedsApp.swift */; };
 		91926A3A2B324F9E0096D1DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91926A392B324F9E0096D1DE /* ContentView.swift */; };
 		91926A3C2B324F9F0096D1DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91926A3B2B324F9F0096D1DE /* Assets.xcassets */; };
@@ -24,6 +26,8 @@
 		9110DECB2B35263300AE3AE9 /* AddListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListItemView.swift; sourceTree = "<group>"; };
 		9110DECD2B3532F600AE3AE9 /* ListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemView.swift; sourceTree = "<group>"; };
 		9110DECF2B353F5A00AE3AE9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		9110DED12B35515C00AE3AE9 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
+		9110DED32B3558BE00AE3AE9 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		91926A342B324F9D0096D1DE /* Wants+Needs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wants+Needs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91926A372B324F9D0096D1DE /* Wants_NeedsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wants_NeedsApp.swift; sourceTree = "<group>"; };
 		91926A392B324F9E0096D1DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				9110DEC92B35258400AE3AE9 /* ListItem.swift */,
+				9110DED32B3558BE00AE3AE9 /* UserSettings.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -97,6 +102,7 @@
 				9110DECD2B3532F600AE3AE9 /* ListItemView.swift */,
 				91926A392B324F9E0096D1DE /* ContentView.swift */,
 				9110DECF2B353F5A00AE3AE9 /* SettingsView.swift */,
+				9110DED12B35515C00AE3AE9 /* ColorPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -174,8 +180,10 @@
 				9110DECE2B3532F600AE3AE9 /* ListItemView.swift in Sources */,
 				9110DED02B353F5A00AE3AE9 /* SettingsView.swift in Sources */,
 				91926A492B3250370096D1DE /* NeedsView.swift in Sources */,
+				9110DED42B3558BE00AE3AE9 /* UserSettings.swift in Sources */,
 				91926A3A2B324F9E0096D1DE /* ContentView.swift in Sources */,
 				9110DECA2B35258400AE3AE9 /* ListItem.swift in Sources */,
+				9110DED22B35515C00AE3AE9 /* ColorPickerView.swift in Sources */,
 				91926A382B324F9D0096D1DE /* Wants_NeedsApp.swift in Sources */,
 				9110DECC2B35263300AE3AE9 /* AddListItemView.swift in Sources */,
 				91926A472B32502F0096D1DE /* WantsView.swift in Sources */,
@@ -307,8 +315,10 @@
 		91926A432B324F9F0096D1DE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconPink";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Wants+Needs/Preview Content\"";
@@ -336,8 +346,10 @@
 		91926A442B324F9F0096D1DE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIconPink";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Wants+Needs/Preview Content\"";

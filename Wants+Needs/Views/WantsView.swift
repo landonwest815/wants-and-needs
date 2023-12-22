@@ -59,11 +59,11 @@ struct WantsView: View {
                         }
                     // Cancel
                     ToolbarItemGroup(placement: .navigationBarLeading) {
-                            Button {
+                            NavigationLink(destination: {
                                 SettingsView()
-                            } label: {
+                            }, label: {
                                 Image(systemName: "gear")
-                            }
+                            })
                         }
                 }
         }

@@ -54,12 +54,11 @@ struct NeedsView: View {
                     }
                     // Cancel
                     ToolbarItemGroup(placement: .navigationBarLeading) {
-                        NavigationLink(destination: {
-                            SettingsView()
-                        }, label: {
-                            Image(systemName: "gear")
-                        })
-                        
+                            NavigationLink(destination: {
+                                SettingsView()
+                            }, label: {
+                                Image(systemName: "gear")
+                            })
                         }
                 }
         }
