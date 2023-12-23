@@ -14,6 +14,8 @@ struct ListItemView: View {
     // SwiftData
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
+    
+    @Query var userSettingsArray: [UserSettings]
 
     // Passed in want
     let item: ListItem
@@ -33,7 +35,6 @@ struct ListItemView: View {
                 // MARK: - Title Section
                     Section {
                         TextField("", text: $titleTextField)
-                            .multilineTextAlignment(.leading)
                             .onChange(of: titleTextField) {
                                 item.title = titleTextField
                             }
@@ -85,7 +86,8 @@ struct ListItemView: View {
                     
                 // MARK: - Additional Section
                     Section {
-                        TextField("", text: $infoTextField)
+                        TextEditor(text: $infoTextField)
+                                .frame(height: 150)
                             .onChange(of: infoTextField) {
                                 item.info = infoTextField
                             }
@@ -104,6 +106,9 @@ struct ListItemView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "trash")
+                            .foregroundColor(userSettingsArray.first.map { Color(hex: $0.accentColor) } ?? .red)
+                            .fontWeight(.medium)
+
                     }
                     .foregroundColor(.red)
                     .fontWeight(.heavy)
@@ -119,9 +124,12 @@ struct ListItemView: View {
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-       let container = try! ModelContainer(for: ListItem.self, configurations: config)
-
+    let container = try! ModelContainer(for: ListItem.self, UserSettings.self, configurations: config)
     let item = ListItem(isWant: true, title: "Test Item")
+    let userSettings =  UserSettings()
+    userSettings.accentColor = "ff0000"
+    container.mainContext.insert(userSettings)
+    
     return ListItemView(item: item)
            .modelContainer(container)
 }

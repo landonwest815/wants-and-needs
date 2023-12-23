@@ -49,7 +49,8 @@ struct WantsView: View {
                             Button {
                                 isShowingSheet.toggle()
                             } label: {
-                                Image(systemName: "plus.circle")
+                                Image(systemName: "pencil")
+                                    .fontWeight(.heavy)
                             }
                             .sheet(isPresented: $isShowingSheet) {
                                 AddListItemView(isWant: true)
@@ -63,6 +64,7 @@ struct WantsView: View {
                                 SettingsView()
                             }, label: {
                                 Image(systemName: "gear")
+                                    .fontWeight(.medium)
                             })
                         }
                 }

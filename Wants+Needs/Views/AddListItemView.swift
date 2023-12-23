@@ -32,11 +32,15 @@ struct AddListItemView: View {
             item.isWant == false
         }) var needs: [ListItem]
     
+    @Query var userSettingsArray: [UserSettings]
+    
     // User Input
     @State private var title: String = ""
     @State private var selectedImage: PhotosPickerItem?
     @State private var imageData: Data?
     @State private var info: String = ""
+    
+    @State private var accentColor: Color = .red
 
     // UI
     var body: some View {
@@ -48,7 +52,6 @@ struct AddListItemView: View {
                 // MARK: - Title
                     Section {
                         TextField("", text: $title)
-                            .multilineTextAlignment(.leading)
                     }
                     header: {
                         Text(isWant ? "Want" : "Need")
@@ -79,6 +82,7 @@ struct AddListItemView: View {
                                     .foregroundColor(.red)
                             }
                         }
+                        
                     }
                     header: {
                         Text("Media")
@@ -95,9 +99,8 @@ struct AddListItemView: View {
                 
                 // MARK: - Additional
                     Section {
-                        TextField("", text: $info)
-                            .multilineTextAlignment(.leading)
-                            .frame(height: 150, alignment: .top)
+                        TextEditor(text: $info)
+                                .frame(height: 150)
                     }
                     header: {
                         Text("Additional Comments")
@@ -123,12 +126,21 @@ struct AddListItemView: View {
                     }
             }
         }
+        .onAppear() {
+            if let userSettings = userSettingsArray.first {
+                accentColor = Color(hex: userSettings.accentColor) ?? .red
+            }
+        }
+        .accentColor(accentColor)
     }
 }
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-       let container = try! ModelContainer(for: ListItem.self, configurations: config)
+       let container = try! ModelContainer(for: ListItem.self, UserSettings.self, configurations: config)
+    let userSettings =  UserSettings()
+    userSettings.accentColor = "ff0000"
+    container.mainContext.insert(userSettings)
 
     return AddListItemView(isWant: false)
            .modelContainer(container)
