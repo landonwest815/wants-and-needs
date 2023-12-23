@@ -18,9 +18,8 @@ struct SettingsView: View {
     @State private var accentColor: Color = .purple
 
     private let alternateAppIcons: [String] = [
-    "AppIconPink",
-    "AppIconPink",
-    "AppIconPink"
+    "AppIcon1",
+    "AppIcon2"
     ]
 
     // UI
@@ -39,20 +38,20 @@ struct SettingsView: View {
                             Text("Accent Color")
                             Spacer()
                             
-                                RoundedRectangle(cornerRadius: 8)
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(accentColor)
-                                    .background(
-                                                NavigationLink("", destination: ColorPickerView(selectedColor: $accentColor))
-                                                    .opacity(0)
-                                                )
+                            RoundedRectangle(cornerRadius: 8)
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(accentColor)
+                                .background(
+                                    NavigationLink("", destination: ColorPickerView(selectedColor: $accentColor))
+                                        .opacity(0)
+                                )
                             
                         }
                     }
                 }
-                header: {
-                    Text("Customization")
-                }
+            header: {
+                Text("Customization")
+            }
                 
                 Section {
                     HStack {
@@ -60,22 +59,22 @@ struct SettingsView: View {
                         ForEach(alternateAppIcons.indices, id: \.self) { item in
                             Button {
                                 print("Icon was pressed.")
-                                UIApplication.shared
-                                    .setAlternateIconName(alternateAppIcons[item])
-                                { error in
-                                    if error != nil {
-                                        print("Failed")
-                                    } else {
-                                        print("Success")
+                                setApplicationIconName(iconName: alternateAppIcons[item] + (accentColor.toHex() ?? "ff0000"))
+                                if let userSettings = userSettingsArray.first {
+                                    userSettings.appIcon = item + 1
                                     }
-                                }
                                 
                             } label: {
-                                Image("\(alternateAppIcons[item])Image")
+                                Image("\(alternateAppIcons[item] + (accentColor.toHex() ?? "ff0000"))Image")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 80, height: 80)
                                     .cornerRadius(14)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .stroke(Color.white, lineWidth: userSettingsArray.first?.appIcon == item + 1 ? 3 : 0)
+                                    )
+                                
                             }
                             .buttonStyle(.borderless)
                             
@@ -84,7 +83,8 @@ struct SettingsView: View {
                     }
                 }
                 .padding(.vertical, -10)
-                .listRowBackground(Color(UIColor.systemGroupedBackground))            }
+                .listRowBackground(Color(UIColor.systemGroupedBackground))
+            }
             
             
                                         
@@ -94,21 +94,37 @@ struct SettingsView: View {
                 pullFromUserSettings()
             }
             .onChange(of: accentColor) {
-                    updateAccentColorInUserSettings()
-                }
+                updateAccentColorInUserSettings()
+            }
         }
     
     private func updateAccentColorInUserSettings() {
         if let userSettings = userSettingsArray.first {
-            userSettings.accentColor = accentColor.toHex() ?? "FFFFFF"
+            userSettings.accentColor = accentColor.toHex() ?? "ff0000"
+            setApplicationIconName(iconName: "AppIcon\(userSettings.appIcon)\(userSettings.accentColor)")
+            print("AppIcon\(userSettings.appIcon)\(userSettings.accentColor)")
         }
     }
     
     private func pullFromUserSettings() {
         if let userSettings = userSettingsArray.first {
             accentColor = Color(hex: userSettings.accentColor) ?? .red
-                }
+        }
     }
+    
+    private func setApplicationIconName(iconName: String) {
+            if UIApplication.shared.responds(to: #selector(getter: UIApplication.supportsAlternateIcons)) && UIApplication.shared.supportsAlternateIcons {
+                
+                typealias setAlternateIconName = @convention(c) (NSObject, Selector, NSString, @escaping (NSError) -> ()) -> ()
+                
+                let selectorString = "_setAlternateIconName:completionHandler:"
+                
+                let selector = NSSelectorFromString(selectorString)
+                let imp = UIApplication.shared.method(for: selector)
+                let method = unsafeBitCast(imp, to: setAlternateIconName.self)
+                method(UIApplication.shared, selector, iconName as NSString, { _ in })
+            }
+        }
         
 }
 
@@ -116,7 +132,7 @@ struct SettingsView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
        let container = try! ModelContainer(for: ListItem.self, UserSettings.self, configurations: config)
     let userSettings =  UserSettings()
-    userSettings.accentColor = "FFFFFF"
+    userSettings.accentColor = "ff0000"
     container.mainContext.insert(userSettings)
 
     return SettingsView()

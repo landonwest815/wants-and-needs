@@ -10,6 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     
+    @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
     @Query var userSettingsArray: [UserSettings]
         
@@ -28,7 +29,7 @@ struct ContentView: View {
                         Text("Needs")
                     } 
             }
-            .accentColor(Color(hex: userSettingsArray.first?.accentColor ?? "FF0000"))
+            .accentColor(Color(hex: userSettingsArray.first?.accentColor ?? "ff0000"))
         }
         .onAppear() {
             handleUserSettings()
@@ -37,7 +38,8 @@ struct ContentView: View {
     
     private func handleUserSettings() {
         if let userSettings = userSettingsArray.first {
-            userSettings.accentColor = userSettingsArray.first?.accentColor ?? "FF0000"
+            userSettings.accentColor = userSettingsArray.first?.accentColor ?? "ff0000"
+            userSettings.appIcon = 1
         } else {
             let newUserSettings = UserSettings()
             context.insert(newUserSettings)

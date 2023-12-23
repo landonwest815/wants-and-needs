@@ -12,8 +12,10 @@ import SwiftData
 @Model
 class UserSettings {
     var accentColor: String
+    var appIcon: Int
     
     init() {
-        accentColor = "FFFFFF"
+        accentColor = "ff0000"
+        appIcon = 1
     }
 }
