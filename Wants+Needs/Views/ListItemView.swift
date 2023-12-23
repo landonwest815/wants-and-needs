@@ -51,6 +51,8 @@ struct ListItemView: View {
                                 .resizable()
                                 .scaledToFill()
                                 .frame(maxWidth: .infinity, maxHeight: 300)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .padding(.top, 5)
                             }
                         
                         PhotosPicker(selection: $itemImage, matching: .images) {
@@ -83,6 +85,7 @@ struct ListItemView: View {
                         }
                         
                     }
+                    .listRowSeparator(.hidden)
                     
                 // MARK: - Additional Section
                     Section {

@@ -27,12 +27,35 @@ struct NeedsView: View {
         NavigationStack {
             
             // MARK: - List of Needs
-                List {
+                Form {
                     ForEach(needs, id: \.self) { need in
                         // If a need is tapped, bring up its information using NeedView
-                        NavigationLink(need.title) {
-                            ListItemView(item: need)
+                        Section {
+                            NavigationLink(need.title) {
+                                ListItemView(item: need)
+                            }.padding(5)
+                            
+                            if let imageData = need.itemImage,
+                               let uiImage = UIImage(data: imageData) {
+                                VStack {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(maxWidth: 200, maxHeight: 200)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .padding(.bottom, 10)
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .deleteDisabled(true)
+                                .background(
+                                    NavigationLink("", destination: ListItemView(item: need))
+                                        .opacity(0)
+                                    )
+                            
+                            }
                         }
+                        .listSectionSpacing(10)
+                        .listRowSeparator(.hidden)
                     }
                     .onDelete(perform: delete)
                 }
@@ -41,27 +64,40 @@ struct NeedsView: View {
                     // Add
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         // MARK: - Add Need
-                        Button {
-                            isShowingSheet.toggle()
-                        } label: {
-                            Image(systemName: "pencil").fontWeight(.heavy)
+                            Button {
+                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                                isShowingSheet.toggle()
+                            } label: {
+                                Image(systemName: "pencil")
+                                    .fontWeight(.heavy)
+                            }
+                            .sheet(isPresented: $isShowingSheet) {
+                                AddListItemView(isWant: false)
+                                    .presentationDragIndicator(.visible)
+                                    .presentationDetents([.large])
+                            }
                         }
-                        .sheet(isPresented: $isShowingSheet) {
-                            AddListItemView(isWant: false)
-                                .presentationDragIndicator(.visible)
-                                .presentationDetents([.large])
-                        }
-                    }
                     // Cancel
                     ToolbarItemGroup(placement: .navigationBarLeading) {
                             NavigationLink(destination: {
                                 SettingsView()
                             }, label: {
-                                Image(systemName: "gear").fontWeight(.medium)
+                                Image(systemName: "gear")
+                                    .fontWeight(.medium)
                             })
+                            .simultaneousGesture(TapGesture().onEnded{
+                                let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+                                impactMedium.impactOccurred()
+                            })
+                            
+                            
+                    
                         }
+                    
                 }
+                
         }
+        
     }
 
     // MARK: - Delete Need

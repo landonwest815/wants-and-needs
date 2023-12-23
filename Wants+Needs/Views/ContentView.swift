@@ -39,7 +39,6 @@ struct ContentView: View {
     private func handleUserSettings() {
         if let userSettings = userSettingsArray.first {
             userSettings.accentColor = userSettingsArray.first?.accentColor ?? "ff0000"
-            userSettings.appIcon = 1
         } else {
             let newUserSettings = UserSettings()
             context.insert(newUserSettings)

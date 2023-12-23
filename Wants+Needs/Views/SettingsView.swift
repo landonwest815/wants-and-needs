@@ -16,6 +16,7 @@ struct SettingsView: View {
     
     @Query var userSettingsArray: [UserSettings]
     @State private var accentColor: Color = .purple
+    @State private var appIcon: Int = 1
 
     private let alternateAppIcons: [String] = [
     "AppIcon1",
@@ -60,8 +61,9 @@ struct SettingsView: View {
                             Button {
                                 print("Icon was pressed.")
                                 setApplicationIconName(iconName: alternateAppIcons[item] + (accentColor.toHex() ?? "ff0000"))
+                                appIcon = item + 1
                                 if let userSettings = userSettingsArray.first {
-                                    userSettings.appIcon = item + 1
+                                    userSettings.appIcon = appIcon
                                     }
                                 
                             } label: {
@@ -72,7 +74,7 @@ struct SettingsView: View {
                                     .cornerRadius(14)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 15)
-                                            .stroke(Color.white, lineWidth: userSettingsArray.first?.appIcon == item + 1 ? 3 : 0)
+                                            .stroke(Color.white, lineWidth: appIcon == item + 1 ? 3 : 0)
                                     )
                                 
                             }
@@ -109,6 +111,8 @@ struct SettingsView: View {
     private func pullFromUserSettings() {
         if let userSettings = userSettingsArray.first {
             accentColor = Color(hex: userSettings.accentColor) ?? .red
+            appIcon = userSettings.appIcon
+            print(appIcon)
         }
     }
     

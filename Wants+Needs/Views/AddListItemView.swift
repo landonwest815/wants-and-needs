@@ -61,10 +61,12 @@ struct AddListItemView: View {
                     Section {
                         if let imageData = imageData,
                             let uiImage = UIImage(data: imageData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(maxWidth: .infinity, maxHeight: 300)
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(maxWidth: .infinity, maxHeight: 300)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .padding(.top, 5)
                             }
                         
                         PhotosPicker(selection: $selectedImage, matching: .images) {
@@ -96,6 +98,7 @@ struct AddListItemView: View {
                             }
                         }
                     }
+                    .listRowSeparator(.hidden)
                 
                 // MARK: - Additional
                     Section {
