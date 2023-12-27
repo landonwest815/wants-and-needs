@@ -17,6 +17,8 @@ struct SettingsView: View {
     @Query var userSettingsArray: [UserSettings]
     @State private var accentColor: Color = .purple
     @State private var appIcon: Int = 1
+    
+    @State private var showConfirmation = false
 
     private let alternateAppIcons: [String] = [
     "AppIcon1",
@@ -86,9 +88,32 @@ struct SettingsView: View {
                 }
                 .padding(.vertical, -10)
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
+                
+                Section {
+                    Button {
+                        showConfirmation = true
+                    } label: {
+                        Text("Reset Data")
+                            .foregroundColor(.red)
+                    }
+                    .confirmationDialog("Delete data?", isPresented: $showConfirmation) {
+                        Button("Delete everything!", role: .destructive, action: {
+                                do {
+                                    try context.delete(model: ListItem.self)
+                                    try context.delete(model: UserSettings.self)
+                                } catch {
+                                    print("Failed to clear all data.")
+                                }
+                        })
+                        
+                        // This button overrides the default Cancel button.
+                        Button("Mmm.. nevermind", role: .cancel, action: {})
+                    }
+                    message: {
+                        Text("Careful! This action is permanent and cannot be undone.")
+                    }
+                }
             }
-            
-            
                                         
             }
             .navigationBarTitle("Settings")

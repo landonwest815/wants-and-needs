@@ -57,17 +57,15 @@ struct AddListItemView: View {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(maxWidth: .infinity, maxHeight: 300)
+                                        .frame(maxWidth: .infinity, maxHeight: 500)
                                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .padding(.top, 5)
+                                        .padding(5)
                             }
                         
                         PhotosPicker(selection: $selectedImage, matching: .images) {
                             Label("Select image", systemImage: "photo")
                         }
-                        
-                        LinkPickerView(enteredLink: $enteredURL)
-                        
+                                                
                         if imageData != nil {
                             Button(role: .destructive) {
                                 withAnimation {
@@ -79,6 +77,8 @@ struct AddListItemView: View {
                                     .foregroundColor(.red)
                             }
                         }
+                        
+                        LinkPickerView(enteredLink: $enteredURL)
                         
                     }
                     header: {

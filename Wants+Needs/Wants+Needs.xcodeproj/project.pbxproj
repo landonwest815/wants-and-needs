@@ -23,6 +23,19 @@
 		91B5CCC72B3632AB00D7CA63 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B5CCC62B3632AB00D7CA63 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		91A6FCD82B3CBB9D00BB01C7 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		9110DEC92B35258400AE3AE9 /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		9110DECB2B35263300AE3AE9 /* AddListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListItemView.swift; sourceTree = "<group>"; };
@@ -131,6 +144,7 @@
 				91926A302B324F9D0096D1DE /* Sources */,
 				91926A312B324F9D0096D1DE /* Frameworks */,
 				91926A322B324F9D0096D1DE /* Resources */,
+				91A6FCD82B3CBB9D00BB01C7 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);

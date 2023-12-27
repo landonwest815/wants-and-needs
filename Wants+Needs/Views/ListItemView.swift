@@ -44,6 +44,10 @@ struct ListItemView: View {
                         Text(item.isWant ? "Want" : "Need")
                     }
                 
+                Section {
+                    
+                }
+                
                 // MARK: - Media Section
                     Section {
                         if let imageData = item.itemImage,
@@ -92,6 +96,9 @@ struct ListItemView: View {
                         
                     }
                     .listRowSeparator(.hidden)
+                
+                
+                
                     
                 // MARK: - Additional Info Section
                     Section {
