@@ -23,6 +23,7 @@ struct ListItemView: View {
     // User Inputs
     @State private var titleTextField: String = ""
     @State private var itemImage: PhotosPickerItem?
+    @State private var itemURL: String = ""
     @State private var infoTextField: String = ""
     
     // UI
@@ -50,26 +51,31 @@ struct ListItemView: View {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(maxWidth: .infinity, maxHeight: 300)
+                                .frame(maxWidth: .infinity, maxHeight: 500)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                                .padding(.top, 5)
-                            }
-                        
-                        PhotosPicker(selection: $itemImage, matching: .images) {
-                            Label("Select image", systemImage: "photo")
+                                .padding(5)
                         }
-                        
-                        if item.itemImage != nil {
-                            Button(role: .destructive) {
-                                withAnimation {
-                                    itemImage = nil
-                                    item.itemImage = nil
+                                                    
+                            PhotosPicker(selection: $itemImage, matching: .images) {
+                                Label("Select image", systemImage: "photo")
+                            }
+                                                        
+                            if item.itemImage != nil {
+                                Button(role: .destructive) {
+                                    withAnimation {
+                                        itemImage = nil
+                                        item.itemImage = nil
+                                    }
+                                } label: {
+                                    Label("Remove Image", systemImage: "xmark")
+                                        .foregroundColor(.red)
                                 }
-                            } label: {
-                                Label("Remove Image", systemImage: "xmark")
-                                    .foregroundColor(.red)
                             }
-                        }
+                                                    
+                        LinkPickerView(enteredLink: $itemURL)
+                            .onChange(of: itemURL) {
+                                item.itemURL = itemURL
+                            }
                         
                     }
                     header: {
@@ -87,15 +93,15 @@ struct ListItemView: View {
                     }
                     .listRowSeparator(.hidden)
                     
-                // MARK: - Additional Section
+                // MARK: - Additional Info Section
                     Section {
                         TextEditor(text: $infoTextField)
-                                .frame(height: 150)
+                                .frame(height: 300)
                             .onChange(of: infoTextField) {
                                 item.info = infoTextField
                             }
                             .multilineTextAlignment(.leading)
-                            .frame(height: 100, alignment: .top)
+                            .frame(height: 300, alignment: .top)
                     }
                     header: {
                         Text("Additional Comments")
@@ -121,6 +127,7 @@ struct ListItemView: View {
                 // Update with Pre-Existing Data
                 titleTextField = item.title
                 infoTextField = item.info ?? ""
+                itemURL = item.itemURL ?? ""
             }
     }
 }

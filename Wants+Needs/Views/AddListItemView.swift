@@ -22,15 +22,7 @@ struct AddListItemView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
     
-        // Wants in data
-        @Query(filter: #Predicate<ListItem> { item in
-            item.isWant == true
-        }) var wants: [ListItem]
         
-        // Needs in data
-        @Query(filter: #Predicate<ListItem> { item in
-            item.isWant == false
-        }) var needs: [ListItem]
     
     @Query var userSettingsArray: [UserSettings]
     
@@ -38,6 +30,7 @@ struct AddListItemView: View {
     @State private var title: String = ""
     @State private var selectedImage: PhotosPickerItem?
     @State private var imageData: Data?
+    @State private var enteredURL: String = ""
     @State private var info: String = ""
     
     @State private var accentColor: Color = .red
@@ -73,6 +66,8 @@ struct AddListItemView: View {
                             Label("Select image", systemImage: "photo")
                         }
                         
+                        LinkPickerView(enteredLink: $enteredURL)
+                        
                         if imageData != nil {
                             Button(role: .destructive) {
                                 withAnimation {
@@ -103,7 +98,7 @@ struct AddListItemView: View {
                 // MARK: - Additional
                     Section {
                         TextEditor(text: $info)
-                                .frame(height: 150)
+                                .frame(height: 300)
                     }
                     header: {
                         Text("Additional Comments")
@@ -115,7 +110,7 @@ struct AddListItemView: View {
                 // Add
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button("Add") {
-                            let item = ListItem(isWant: isWant, title: title, itemImage: imageData, info: info)
+                            let item = ListItem(isWant: isWant, title: title, itemImage: imageData, itemURL: enteredURL, info: info)
                             context.insert(item)
                             dismiss()
                         }

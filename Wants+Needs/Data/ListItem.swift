@@ -21,6 +21,7 @@ class ListItem {
     var isWant: Bool
     var title: String
     @Attribute(.externalStorage) var itemImage: Data?   // OPTIONAL
+    var itemURL: String?
     var info: String?                                   // OPTIONAL
     
     // Just a title
@@ -30,10 +31,11 @@ class ListItem {
     }
     
     // Title + Media / Additional Info
-    init(isWant: Bool, title: String, itemImage: Data? = nil, info: String? = nil) {
+    init(isWant: Bool, title: String, itemImage: Data? = nil, itemURL: String? = nil, info: String? = nil) {
         self.isWant = isWant
         self.title = title
         self.itemImage = itemImage
+        self.itemURL = itemURL
         self.info = info
     }
 }

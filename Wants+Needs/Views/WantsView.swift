@@ -38,17 +38,21 @@ struct WantsView: View {
                         Section {
                             NavigationLink(want.title) {
                                 ListItemView(item: want)
-                            }.padding(5)
+                            }
+                            //.padding(5)
+                            .fontWeight(.semibold)
                             
                             if let imageData = want.itemImage,
                                let uiImage = UIImage(data: imageData) {
-                                VStack {
+                                HStack {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
-                                        .frame(maxWidth: 200, maxHeight: 200)
                                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .padding(.bottom, 10)
+                                        .padding(.bottom, 5)
+                                        .padding(.leading, 5)
+                                        .padding(.trailing, 5)
+
                                 }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .deleteDisabled(true)
@@ -59,7 +63,7 @@ struct WantsView: View {
                             
                             }
                         }
-                        .listSectionSpacing(10)
+                        .listSectionSpacing(15)
                         .listRowSeparator(.hidden)
                     }
                     .onDelete(perform: delete)

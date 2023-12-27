@@ -19,6 +19,7 @@
 		91926A3F2B324F9F0096D1DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91926A3E2B324F9F0096D1DE /* Preview Assets.xcassets */; };
 		91926A472B32502F0096D1DE /* WantsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91926A462B32502F0096D1DE /* WantsView.swift */; };
 		91926A492B3250370096D1DE /* NeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91926A482B3250370096D1DE /* NeedsView.swift */; };
+		91A6FCC52B3C8A1800BB01C7 /* LinkPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A6FCC42B3C8A1800BB01C7 /* LinkPickerView.swift */; };
 		91B5CCC72B3632AB00D7CA63 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B5CCC62B3632AB00D7CA63 /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		91926A3E2B324F9F0096D1DE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		91926A462B32502F0096D1DE /* WantsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WantsView.swift; sourceTree = "<group>"; };
 		91926A482B3250370096D1DE /* NeedsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedsView.swift; sourceTree = "<group>"; };
+		91A6FCC42B3C8A1800BB01C7 /* LinkPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPickerView.swift; sourceTree = "<group>"; };
 		91B5CCC62B3632AB00D7CA63 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +108,7 @@
 				91926A392B324F9E0096D1DE /* ContentView.swift */,
 				9110DECF2B353F5A00AE3AE9 /* SettingsView.swift */,
 				9110DED12B35515C00AE3AE9 /* ColorPickerView.swift */,
+				91A6FCC42B3C8A1800BB01C7 /* LinkPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 			files = (
 				9110DECE2B3532F600AE3AE9 /* ListItemView.swift in Sources */,
 				9110DED02B353F5A00AE3AE9 /* SettingsView.swift in Sources */,
+				91A6FCC52B3C8A1800BB01C7 /* LinkPickerView.swift in Sources */,
 				91926A492B3250370096D1DE /* NeedsView.swift in Sources */,
 				9110DED42B3558BE00AE3AE9 /* UserSettings.swift in Sources */,
 				91926A3A2B324F9E0096D1DE /* ContentView.swift in Sources */,
