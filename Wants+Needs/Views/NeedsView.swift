@@ -37,20 +37,22 @@ struct NeedsView: View {
                             
                             if let imageData = need.itemImage,
                                let uiImage = UIImage(data: imageData) {
-                                VStack {
+                                HStack {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
-                                        .frame(maxWidth: 200, maxHeight: 200)
                                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .padding(.bottom, 10)
+                                        .padding(.bottom, 5)
+                                        .padding(.leading, 5)
+                                        .padding(.trailing, 5)
+
                                 }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .deleteDisabled(true)
                                 .background(
-                                    NavigationLink("", destination: ListItemView(item: need))
-                                        .opacity(0)
-                                    )
+                                            NavigationLink("", destination: ListItemView(item: need))
+                                                .opacity(0)
+                                            )
                             
                             }
                         }

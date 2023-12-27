@@ -44,7 +44,7 @@ struct AddListItemView: View {
                 
                 // MARK: - Title
                     Section {
-                        TextField("", text: $title)
+                        TextField("What is it?", text: $title)
                     }
                     header: {
                         Text(isWant ? "Want" : "Need")
@@ -65,9 +65,10 @@ struct AddListItemView: View {
                         PhotosPicker(selection: $selectedImage, matching: .images) {
                             Label("Select image", systemImage: "photo")
                         }
-                                                
+                                                    
                         if imageData != nil {
                             Button(role: .destructive) {
+                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                                 withAnimation {
                                     selectedImage = nil
                                     imageData = nil
@@ -98,7 +99,7 @@ struct AddListItemView: View {
                 // MARK: - Additional
                     Section {
                         TextEditor(text: $info)
-                                .frame(height: 300)
+                            .frame(height: 300)
                     }
                     header: {
                         Text("Additional Comments")
@@ -110,6 +111,7 @@ struct AddListItemView: View {
                 // Add
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button("Add") {
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                             let item = ListItem(isWant: isWant, title: title, itemImage: imageData, itemURL: enteredURL, info: info)
                             context.insert(item)
                             dismiss()

@@ -113,6 +113,37 @@ struct SettingsView: View {
                         Text("Careful! This action is permanent and cannot be undone.")
                     }
                 }
+                header: {
+                    Text("Data")
+                }
+                
+                Section {
+                    HStack {
+
+                        Text("Version")
+                            .foregroundColor(.white)
+
+                        Spacer()
+                        
+                        Text("1.0")
+                            .foregroundColor(.white)
+
+                    }
+                    HStack {
+
+                        Text("Developer")
+                            .foregroundColor(.white)
+
+                        Spacer()
+                        
+                        Text("Landon West")
+                            .foregroundColor(.white)
+
+                    }
+                }
+                header: {
+                    Text("Developer Info")
+                }
             }
                                         
             }

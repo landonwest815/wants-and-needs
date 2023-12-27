@@ -13,7 +13,7 @@ struct ContentView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
     @Query var userSettingsArray: [UserSettings]
-        
+            
     var body: some View {
         
         ZStack {

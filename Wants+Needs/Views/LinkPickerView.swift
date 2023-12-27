@@ -14,7 +14,7 @@ struct LinkPickerView: View {
     var body: some View {
         HStack {
             // TextField for entering the link
-            TextField("Enter link here", text: $enteredLink)
+            TextField("Enter a webpage", text: $enteredLink)
                 .onSubmit {
                     submitLink()
                 }
