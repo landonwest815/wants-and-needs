@@ -1,4 +1,4 @@
-<img src="https://github.com/landonwest815/wants-and-needs/blob/main/Assets/AppIcon" width="100">
+<img src="https://github.com/landonwest815/wants-and-needs/blob/main/Assets/AppIcon.png" width="100">
 
 # Wants+Needs App Project Documentation
 
