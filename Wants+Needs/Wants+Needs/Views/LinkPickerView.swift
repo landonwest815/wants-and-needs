@@ -57,5 +57,6 @@ struct LinkPickerView: View {
 }
 
 #Preview {
-    ContentView()
+    @State var enteredLink = ""
+    return LinkPickerView(enteredLink: $enteredLink)
 }

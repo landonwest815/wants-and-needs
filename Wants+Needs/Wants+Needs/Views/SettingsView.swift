@@ -61,7 +61,6 @@ struct SettingsView: View {
                         Spacer()
                         ForEach(alternateAppIcons.indices, id: \.self) { item in
                             Button {
-                                print("Icon was pressed.")
                                 setApplicationIconName(iconName: alternateAppIcons[item] + (accentColor.toHex() ?? "ff0000"))
                                 appIcon = item + 1
                                 if let userSettings = userSettingsArray.first {
@@ -160,7 +159,6 @@ struct SettingsView: View {
         if let userSettings = userSettingsArray.first {
             userSettings.accentColor = accentColor.toHex() ?? "ff0000"
             setApplicationIconName(iconName: "AppIcon\(userSettings.appIcon)\(userSettings.accentColor)")
-            print("AppIcon\(userSettings.appIcon)\(userSettings.accentColor)")
         }
     }
     
@@ -168,7 +166,6 @@ struct SettingsView: View {
         if let userSettings = userSettingsArray.first {
             accentColor = Color(hex: userSettings.accentColor) ?? .red
             appIcon = userSettings.appIcon
-            print(appIcon)
         }
     }
     

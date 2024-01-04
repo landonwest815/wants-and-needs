@@ -77,9 +77,6 @@
 		91926A2B2B324F9D0096D1DE = {
 			isa = PBXGroup;
 			children = (
-				91B5CCC52B36329E00D7CA63 /* Utility */,
-				9110DEC42B34106E00AE3AE9 /* Data */,
-				91926A452B32501E0096D1DE /* Views */,
 				91926A362B324F9D0096D1DE /* Wants+Needs */,
 				91926A352B324F9D0096D1DE /* Products */,
 			);
@@ -98,6 +95,9 @@
 			children = (
 				91926A372B324F9D0096D1DE /* Wants_NeedsApp.swift */,
 				91926A3B2B324F9F0096D1DE /* Assets.xcassets */,
+				91B5CCC52B36329E00D7CA63 /* Utility */,
+				9110DEC42B34106E00AE3AE9 /* Data */,
+				91926A452B32501E0096D1DE /* Views */,
 				91926A3D2B324F9F0096D1DE /* Preview Content */,
 			);
 			path = "Wants+Needs";
@@ -114,11 +114,11 @@
 		91926A452B32501E0096D1DE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				91926A392B324F9E0096D1DE /* ContentView.swift */,
 				91926A462B32502F0096D1DE /* WantsView.swift */,
 				91926A482B3250370096D1DE /* NeedsView.swift */,
 				9110DECB2B35263300AE3AE9 /* AddListItemView.swift */,
 				9110DECD2B3532F600AE3AE9 /* ListItemView.swift */,
-				91926A392B324F9E0096D1DE /* ContentView.swift */,
 				9110DECF2B353F5A00AE3AE9 /* SettingsView.swift */,
 				9110DED12B35515C00AE3AE9 /* ColorPickerView.swift */,
 				91A6FCC42B3C8A1800BB01C7 /* LinkPickerView.swift */,
