@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    
+        
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
     @Query var userSettingsArray: [UserSettings]
@@ -27,7 +27,7 @@ struct ContentView: View {
                     .tabItem() {
                         Image(systemName: "brain")
                         Text("Needs")
-                    } 
+                    }
             }
             .accentColor(Color(hex: userSettingsArray.first?.accentColor ?? "ff0000"))
         }

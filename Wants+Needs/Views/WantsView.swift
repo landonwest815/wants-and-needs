@@ -90,6 +90,7 @@ struct WantsView: View {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
                             NavigationLink(destination: {
                                 SettingsView()
+                                    .toolbar(.hidden, for: .tabBar)
                             }, label: {
                                 Image(systemName: "gear")
                                     .fontWeight(.medium)
