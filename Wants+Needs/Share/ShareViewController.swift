@@ -8,12 +8,13 @@
 import UIKit
 import Social
 import SwiftUI
+import SwiftData
 import UniformTypeIdentifiers
 
 class ShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         isModalInPresentation = true
         
         if let itemProviders = (extensionContext!.inputItems.first as? NSExtensionItem)?.attachments {
@@ -30,7 +31,7 @@ fileprivate struct ShareView: View {
     @State private var items: [ImageItem] = []
     @State private var titleTextField: String = ""
     @State private var type = 0
-    @State private var imageView: UIImage = .checkmark
+    @State private var imageView: UIImage = .add
     
     var body: some View {
         
@@ -38,7 +39,7 @@ fileprivate struct ShareView: View {
             let size = $0.size
             
             VStack(spacing: 15) {
-                Text("Add to ...")
+                Text("")
                     .font(.title3.bold())
                     .frame(maxWidth: .infinity)
                     .overlay(alignment: .leading) {
@@ -59,22 +60,34 @@ fileprivate struct ShareView: View {
                     Section {
                         TextField("", text: $titleTextField)
                     }
-                    header: {
-                        Text("What is it?")
-                    }
+                header: {
+                    Text("What is it?")
+                }
                     
                     Section {
-                            Image(uiImage: imageView/*items.first!.previewImage*/)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                                .padding(.vertical, 3)
+                        Image(uiImage: imageView/*items.first!.previewImage*/)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .padding(.vertical, 3)
                         
                     }
-                    header: {
-                        Text("Media")
-                    }
+                header: {
+                    Text("Media")
                 }
+                }.frame(height: 600)
+    
+                    // Add Button
+                    Button(action: saveItem, label: {
+                        Text("Add")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .padding(.vertical, 10)
+                            .frame(maxWidth: .infinity)
+                            .foregroundStyle(.white)
+                            .background(.red, in: .rect(cornerRadius:10))
+                            .contentShape(.rect)
+                    })
                 
                 
                 Spacer(minLength: 0)
@@ -91,38 +104,46 @@ fileprivate struct ShareView: View {
         
         DispatchQueue.global(qos: .userInitiated).async {
             for provider in itemProviders {
-                let _ = provider.loadDataRepresentation(for: .image) { data, error in
-                    if let data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            items.append(.init(imageData: data, previewImage: image))
+                
+                // Check for image
+                if provider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
+                    
+                    // Screenshots from iOS
+                    provider.loadItem(forTypeIdentifier: UTType.image.identifier) { data, error in
+                        if let data, let image = data as? UIImage {
+                            DispatchQueue.main.async {
+                                self.imageView = image
+                                print("got screenshot image")
+                            }
                         }
                     }
+                    
+                    // Images from Photos app and data collection
+                    provider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { item, error in
+                        
+                        if let imageData = item {
+                            DispatchQueue.main.async {
+                                if let image = UIImage(data: imageData) {
+                                    self.imageView = image
+                                }
+                                items.append(ImageItem(imageData: imageData, previewImage: imageView))
+                                print("got data")
+                            }
+                        }
+                    }
+                    
                 }
             }
         }
-        
-        if let extensionItems = self.extensionContext?.inputItems as? [NSExtensionItem]  {
-              let attachments     = extensionItems.first?.attachments ?? []
-              let imageType       = UTType.image.identifier
-              
-              for provider in attachments {
-                 if provider.hasItemConformingToTypeIdentifier(imageType) {
-                    print("It is an image")
-
-                    // this seems only to handle media from photos
-                     provider.loadItem(forTypeIdentifier: UTType.image.identifier) { item, error in
-                                                  if let image = item as? UIImage {
-                                                      DispatchQueue.main.async {
-                                                          print("It is an image")
-                                                          self.imageView = image
-                                                      }
-                                                      return
-                                                  }
-
-                                              }
-                 }
-              }
-           }
+    }
+    
+    func saveItem() {
+        do {
+            let context = try ModelContext(.init(for: ListItem.self))
+        } catch {
+            print(error.localizedDescription)
+            dismiss()
+        }
     }
     
     func dismiss() {

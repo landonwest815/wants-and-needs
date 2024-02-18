@@ -61,6 +61,8 @@
 		916265962B7EBC4F00947864 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		916265992B7EBC4F00947864 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		9162659B2B7EBC4F00947864 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		91824F2B2B82C074003F0C12 /* Wants+Needs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Wants+Needs.entitlements"; sourceTree = "<group>"; };
+		91824F2C2B82C0DC003F0C12 /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
 		91926A342B324F9D0096D1DE /* Wants+Needs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wants+Needs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91926A372B324F9D0096D1DE /* Wants_NeedsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wants_NeedsApp.swift; sourceTree = "<group>"; };
 		91926A392B324F9E0096D1DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 		916265952B7EBC4F00947864 /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				91824F2C2B82C0DC003F0C12 /* Share.entitlements */,
 				916265962B7EBC4F00947864 /* ShareViewController.swift */,
 				916265982B7EBC4F00947864 /* MainInterface.storyboard */,
 				9162659B2B7EBC4F00947864 /* Info.plist */,
@@ -130,10 +133,11 @@
 		91926A362B324F9D0096D1DE /* Wants+Needs */ = {
 			isa = PBXGroup;
 			children = (
+				9110DEC42B34106E00AE3AE9 /* Data */,
+				91824F2B2B82C074003F0C12 /* Wants+Needs.entitlements */,
 				91926A372B324F9D0096D1DE /* Wants_NeedsApp.swift */,
 				91926A3B2B324F9F0096D1DE /* Assets.xcassets */,
 				91B5CCC52B36329E00D7CA63 /* Utility */,
-				9110DEC42B34106E00AE3AE9 /* Data */,
 				91926A452B32501E0096D1DE /* Views */,
 				91926A3D2B324F9F0096D1DE /* Preview Content */,
 			);
@@ -320,6 +324,7 @@
 		9162659F2B7EBC4F00947864 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2T72RH75T5;
@@ -333,7 +338,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.landonwest.Wants-Needs.Share";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.landonwest.Wants-Needs";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -345,6 +350,7 @@
 		916265A02B7EBC4F00947864 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2T72RH75T5;
@@ -358,7 +364,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.landonwest.Wants-Needs.Share";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.landonwest.Wants-Needs";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -494,6 +500,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Wants+Needs/Wants+Needs.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Wants+Needs/Preview Content\"";
@@ -526,6 +533,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "Wants+Needs/Wants+Needs.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Wants+Needs/Preview Content\"";
