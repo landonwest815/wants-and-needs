@@ -10,8 +10,10 @@ import SwiftData
 
 struct ItemThumbnailView: View {
     
+    @Environment(\.modelContext) var context
     var item: ListItem
     @State private var isShowingSheet: Bool = false
+    @State private var showConfirmation: Bool = false
     
     var body: some View {
             // If a want is tapped, bring up its information using WantView
@@ -83,6 +85,31 @@ struct ItemThumbnailView: View {
                 ListItemView(item: item)
                     .presentationDragIndicator(.visible)
                     .presentationDetents([.large])
+            }
+            .contextMenu {
+                Button {
+                    item.isWant.toggle()
+                } label: {
+                    Label("Switch to \(item.isWant ? "Need" : "Want")", systemImage: item.isWant ? "brain.fill" : "heart.fill")
+                }
+                
+                Button(role: .destructive) {
+                    showConfirmation = true
+                } label: {
+                    Label("Delete \(item.isWant ? "Want" : "Need")", systemImage: "trash")
+                }
+                    
+            }
+            .confirmationDialog("Are you sure you want to delete this \(item.isWant ? "Want" : "Need")?", isPresented: $showConfirmation) {
+                Button("Delete it!", role: .destructive, action: {
+                        context.delete(item)
+                })
+                
+                // This button overrides the default Cancel button.
+                Button("Mmm.. nevermind", role: .cancel, action: {})
+            }
+            message: {
+                Text("Careful! This action is permanent and cannot be undone.")
             }
         
     }
