@@ -115,7 +115,10 @@ fileprivate struct ShareView: View {
                                 self.imageView = image
                                 print("test")
                                 if let imageData = image.pngData() {
-                                    if let image = UIImage(data: imageData) {
+                                    
+                            //  could break  //if let image = UIImage(data: imageData) {
+
+                                    if UIImage(data: imageData) != nil {
                                         items.removeAll()
                                         items.append(ImageItem(imageData: imageData, previewImage: imageView))
                                         print("got screenshot image")

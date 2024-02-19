@@ -13,18 +13,16 @@ import SwiftUI
 import SwiftData
 import PhotosUI
 
-struct AddListItemView: View {
-    
-    // Want or Need?
-    var isWant: Bool
+struct CreationView: View {
     
     // SwiftData
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
-    
-        
-    
     @Query var userSettingsArray: [UserSettings]
+    @State private var accentColor: Color = .red
+    
+    // Want or Need?
+    var isWant: Bool
     
     // User Input
     @State private var title: String = ""
@@ -32,19 +30,20 @@ struct AddListItemView: View {
     @State private var imageData: Data?
     @State private var enteredURL: String = ""
     @State private var info: String = ""
-    
-    @State private var accentColor: Color = .red
+    @FocusState var titleFocus: Bool
+    @FocusState var additionalFocus: Bool
 
     // UI
     var body: some View {
         
-        NavigationStack {
+        NavigationView {
             
             Form {
                 
                 // MARK: - Title
                     Section {
                         TextField("What is it?", text: $title)
+                            .focused($titleFocus)
                     }
                     header: {
                         Text(isWant ? "Want" : "Need")
@@ -52,6 +51,8 @@ struct AddListItemView: View {
                 
                 // MARK: - Media
                     Section {
+                        
+                        // Grab image data
                         if let imageData = imageData,
                             let uiImage = UIImage(data: imageData) {
                                     Image(uiImage: uiImage)
@@ -62,10 +63,12 @@ struct AddListItemView: View {
                                         .padding(5)
                             }
                         
+                        // Add image data
                         PhotosPicker(selection: $selectedImage, matching: .images) {
                             Label("Select image", systemImage: "photo")
                         }
-                                                    
+                                
+                        // Option to remove if image exists
                         if imageData != nil {
                             Button(role: .destructive) {
                                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -79,12 +82,14 @@ struct AddListItemView: View {
                             }
                         }
                         
+                        // URL functionality
                         LinkPickerView(enteredLink: $enteredURL)
                         
                     }
                     header: {
                         Text("Media")
                     }
+                    // Update image
                     .onChange(of: selectedImage) {
                         Task {
                             if let loaded = try? await selectedImage?.loadTransferable(type: Data.self) {
@@ -98,11 +103,25 @@ struct AddListItemView: View {
                 
                 // MARK: - Additional
                     Section {
-                        TextEditor(text: $info)
-                            .frame(height: 300)
+                        ZStack {
+                            TextField("Anything Else?", text: $info, axis: .vertical)
+                                .focused($additionalFocus)
+                            Text(info).opacity(0).padding(.all, 8)
+                                .toolbar {
+                                    ToolbarItemGroup(placement: .keyboard) {
+                                        Spacer()
+                                        
+                                        Button("Done") {
+                                            additionalFocus = false
+                                            titleFocus = false
+                                        }
+                                    }
+                                }
+                        }
                     }
+                
                     header: {
-                        Text("Additional Comments")
+                        Text("Additional Info")
                     }
                 
             } //: Form
@@ -142,6 +161,6 @@ struct AddListItemView: View {
     userSettings.accentColor = "ff0000"
     container.mainContext.insert(userSettings)
 
-    return AddListItemView(isWant: false)
+    return CreationView(isWant: false)
            .modelContainer(container)
 }

@@ -9,13 +9,13 @@ import SwiftUI
 import SwiftData
 import PhotosUI
 
-struct ListItemView: View {
+struct ItemDetailsView: View {
     
     // SwiftData
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
-    
     @Query var userSettingsArray: [UserSettings]
+    @State private var accentColor: Color = .red
 
     // Passed in want
     let item: ListItem
@@ -25,17 +25,20 @@ struct ListItemView: View {
     @State private var itemImage: PhotosPickerItem?
     @State private var itemURL: String = ""
     @State private var infoTextField: String = ""
+    @FocusState var titleFocus: Bool
+    @FocusState var additionalFocus: Bool
     
     // UI
     var body: some View {
         
-        NavigationStack {
+        NavigationView {
             
             Form {
                 
                 // MARK: - Title Section
                     Section {
                         TextField("", text: $titleTextField)
+                            .focused($titleFocus)
                             .onChange(of: titleTextField) {
                                 item.title = titleTextField
                             }
@@ -102,13 +105,24 @@ struct ListItemView: View {
                     
                 // MARK: - Additional Info Section
                     Section {
-                        TextEditor(text: $infoTextField)
-                                .frame(height: 300)
-                            .onChange(of: infoTextField) {
-                                item.info = infoTextField
-                            }
-                            .multilineTextAlignment(.leading)
-                            .frame(height: 300, alignment: .top)
+                        ZStack {
+                            TextField("Anything Else?", text: $infoTextField, axis: .vertical)
+                                .focused($additionalFocus)
+                            Text(infoTextField).opacity(0).padding(.all, 8)
+                                .toolbar {
+                                    ToolbarItemGroup(placement: .keyboard) {
+                                        Spacer()
+                                        
+                                        Button("Done") {
+                                            additionalFocus = false
+                                            titleFocus = false
+                                        }
+                                    }
+                                }
+                                .onChange(of: infoTextField) {
+                                    item.info = infoTextField
+                                }
+                        }
                     }
                     header: {
                         Text("Additional Comments")
@@ -135,7 +149,11 @@ struct ListItemView: View {
                 titleTextField = item.title
                 infoTextField = item.info ?? ""
                 itemURL = item.itemURL ?? ""
+                if let userSettings = userSettingsArray.first {
+                    accentColor = Color(hex: userSettings.accentColor) ?? .red
+                }
             }
+            .accentColor(accentColor)
     }
 }
 
@@ -147,6 +165,6 @@ struct ListItemView: View {
     userSettings.accentColor = "ff0000"
     container.mainContext.insert(userSettings)
     
-    return ListItemView(item: item)
+    return ItemDetailsView(item: item)
            .modelContainer(container)
 }

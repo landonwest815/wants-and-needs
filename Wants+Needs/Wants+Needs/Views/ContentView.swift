@@ -11,13 +11,14 @@ import SwiftData
 struct ContentView: View {
         
     @Environment(\.dismiss) var dismiss
+
+    // SwiftData
     @Environment(\.modelContext) var context
     @Query var userSettingsArray: [UserSettings]
             
     var body: some View {
-        
         ZStack {
-            WantsView()
+            ListsView()
         }
         .onAppear() {
             handleUserSettings()
@@ -25,12 +26,17 @@ struct ContentView: View {
     }
     
     private func handleUserSettings() {
+        
+        // Check if there is any data
         if let userSettings = userSettingsArray.first {
             userSettings.accentColor = userSettingsArray.first?.accentColor ?? "ff0000"
+            
+        // Create fresh user if not
         } else {
             let newUserSettings = UserSettings()
             context.insert(newUserSettings)
         }
+        
     }
 }
 

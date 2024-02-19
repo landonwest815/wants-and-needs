@@ -10,11 +10,20 @@ import SwiftUI
 struct LinkPickerView: View {
     @Binding var enteredLink: String
     @State private var submittedLink: URL?
+    @FocusState var isInputActive: Bool
 
     var body: some View {
         HStack {
             // TextField for entering the link
             TextField("Enter a webpage", text: $enteredLink)
+//                .toolbar {
+//                    ToolbarItemGroup(placement: .keyboard) {
+//                        Spacer()
+//                        Button("Done") {
+//                            isInputActive = false
+//                        }
+//                    }
+//                }
                 .onSubmit {
                     submitLink()
                 }

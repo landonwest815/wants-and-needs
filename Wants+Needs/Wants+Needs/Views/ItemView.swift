@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct ItemThumbnailView: View {
+struct ItemView: View {
     
     @Environment(\.modelContext) var context
     var item: ListItem
@@ -82,7 +82,7 @@ struct ItemThumbnailView: View {
                 isShowingSheet.toggle()
             }
             .sheet(isPresented: $isShowingSheet) {
-                ListItemView(item: item)
+                ItemDetailsView(item: item)
                     .presentationDragIndicator(.visible)
                     .presentationDetents([.large])
             }
@@ -123,5 +123,5 @@ struct ItemThumbnailView: View {
     
     let item = ListItem(isWant: true, title: "test", itemImage: image.pngData())
     container.mainContext.insert(item)
-    return ItemThumbnailView(item: item)
+    return ItemView(item: item)
 }
