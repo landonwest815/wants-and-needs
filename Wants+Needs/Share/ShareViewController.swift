@@ -148,10 +148,8 @@ fileprivate struct ShareView: View {
     
     func saveItem() {
         do {
-            let context = try ModelContext(.init(for: ListItem.self))
+            let context = try ModelContext(.init(for: ListItem.self, UserSettings.self))
             context.insert(ListItem(isWant: (type == 0), title: titleTextField, itemImage: items.first?.imageData))
-            
-            try context.save()
             dismiss()
         } catch {
             print(error.localizedDescription)
