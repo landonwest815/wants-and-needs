@@ -11,6 +11,7 @@ import SwiftData
 struct ItemThumbnailView: View {
     
     var item: ListItem
+    @State private var isShowingSheet: Bool = false
     
     var body: some View {
             // If a want is tapped, bring up its information using WantView
@@ -43,12 +44,14 @@ struct ItemThumbnailView: View {
 //            .listSectionSpacing(25)
 //            .listRowSeparator(.hidden)
         
-            VStack(alignment: .leading, spacing: 0){
+            VStack(alignment: .leading, spacing: 0) {
                 HStack{
                     Text(item.title)
+                        .fontWeight(.semibold)
+                        .font(.system(size:18))
                     Spacer()
                 }
-                .padding(15)
+                .padding(12.5)
                 
                 if let imageData = item.itemImage,
                    let uiImage = UIImage(data: imageData) {
@@ -56,19 +59,32 @@ struct ItemThumbnailView: View {
                         Image(uiImage: uiImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .padding(.bottom, 10)
-                            .padding(.leading, 5)
-                            .padding(.trailing, 5)
+                            .clipShape(RoundedRectangle(cornerRadius: 12.5)) // Apply rounded corners to the clipped image
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12.5, style: .circular)
+                                    .stroke(Color(uiColor: .systemGray3), lineWidth: 1)
+                            )
+                            .padding(.horizontal, 12.5)
+                            .padding(.bottom, 12.5)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: 250)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-            .background(Color(uiColor: .systemGray5))
-            .cornerRadius(10)
+            .listRowSeparator(.hidden)
+            .background(Color(uiColor: .systemGray6))
+            .cornerRadius(12.5)
             .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .circular).stroke(Color(uiColor: .tertiaryLabel), lineWidth: 1)
+                RoundedRectangle(cornerRadius: 12.5, style: .circular).stroke(Color(uiColor: .systemGray3), lineWidth: 1)
             )
+            .onTapGesture {
+                isShowingSheet.toggle()
+            }
+            .sheet(isPresented: $isShowingSheet) {
+                ListItemView(item: item)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.large])
+            }
+        
     }
 }
 

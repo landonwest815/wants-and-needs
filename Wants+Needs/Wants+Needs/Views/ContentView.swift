@@ -17,19 +17,7 @@ struct ContentView: View {
     var body: some View {
         
         ZStack {
-            TabView {
-                WantsView()
-                    .tabItem() {
-                        Image(systemName: "heart")
-                        Text("Wants")
-                    }
-                NeedsView()
-                    .tabItem() {
-                        Image(systemName: "brain")
-                        Text("Needs")
-                    }
-            }
-            .accentColor(Color(hex: userSettingsArray.first?.accentColor ?? "ff0000"))
+            WantsView()
         }
         .onAppear() {
             handleUserSettings()
