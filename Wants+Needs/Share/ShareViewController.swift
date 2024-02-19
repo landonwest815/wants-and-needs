@@ -101,7 +101,7 @@ fileprivate struct ShareView: View {
     
     func extractItems(size: CGSize) {
         guard items.isEmpty else { return }
-        
+                
         DispatchQueue.global(qos: .userInitiated).async {
             for provider in itemProviders {
                 
@@ -113,7 +113,15 @@ fileprivate struct ShareView: View {
                         if let data, let image = data as? UIImage {
                             DispatchQueue.main.async {
                                 self.imageView = image
-                                print("got screenshot image")
+                                print("test")
+                                if let imageData = image.pngData() {
+                                    if let image = UIImage(data: imageData) {
+                                        items.removeAll()
+                                        items.append(ImageItem(imageData: imageData, previewImage: imageView))
+                                        print("got screenshot image")
+                                        return
+                                    }
+                                }
                             }
                         }
                     }
@@ -121,18 +129,19 @@ fileprivate struct ShareView: View {
                     // Images from Photos app and data collection
                     provider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { item, error in
                         
-                        if let imageData = item {
-                            DispatchQueue.main.async {
-                                if let image = UIImage(data: imageData) {
-                                    self.imageView = image
+                            if let imageData = item {
+                                DispatchQueue.main.async {
+                                    if let image = UIImage(data: imageData) {
+                                        self.imageView = image
+                                    }
+                                    items.append(ImageItem(imageData: imageData, previewImage: imageView))
+                                    print("got data")
                                 }
-                                items.append(ImageItem(imageData: imageData, previewImage: imageView))
-                                print("got data")
                             }
                         }
                     }
                     
-                }
+                
             }
         }
     }
@@ -140,6 +149,10 @@ fileprivate struct ShareView: View {
     func saveItem() {
         do {
             let context = try ModelContext(.init(for: ListItem.self))
+            context.insert(ListItem(isWant: (type == 0), title: titleTextField, itemImage: items.first?.imageData))
+            
+            try context.save()
+            dismiss()
         } catch {
             print(error.localizedDescription)
             dismiss()
