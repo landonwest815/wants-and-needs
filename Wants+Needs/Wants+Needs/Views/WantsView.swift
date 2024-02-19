@@ -32,15 +32,14 @@ struct WantsView: View {
         NavigationStack {
             
             // MARK: - List of Wants
-                Form {
+                List {
                     ForEach(wants, id: \.self) { want in
                         // If a want is tapped, bring up its information using WantView
                         Section {
                             NavigationLink(want.title) {
                                 ListItemView(item: want)
                             }
-                            //.padding(5)
-                            .fontWeight(.semibold)
+                            .padding(5)
                             
                             if let imageData = want.itemImage,
                                let uiImage = UIImage(data: imageData) {
@@ -49,7 +48,7 @@ struct WantsView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .padding(.bottom, 5)
+                                        .padding(.bottom, 10)
                                         .padding(.leading, 5)
                                         .padding(.trailing, 5)
 
@@ -63,7 +62,7 @@ struct WantsView: View {
                             
                             }
                         }
-                        .listSectionSpacing(15)
+                        .listSectionSpacing(25)
                         .listRowSeparator(.hidden)
                     }
                     .onDelete(perform: delete)
@@ -108,6 +107,7 @@ struct WantsView: View {
                 }
                 
         }
+        
         
     }
 

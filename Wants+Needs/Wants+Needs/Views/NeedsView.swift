@@ -42,7 +42,7 @@ struct NeedsView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .padding(.bottom, 5)
+                                        .padding(.bottom, 10)
                                         .padding(.leading, 5)
                                         .padding(.trailing, 5)
 
@@ -56,7 +56,7 @@ struct NeedsView: View {
                             
                             }
                         }
-                        .listSectionSpacing(10)
+                        .listSectionSpacing(25)
                         .listRowSeparator(.hidden)
                     }
                     .onDelete(perform: delete)
