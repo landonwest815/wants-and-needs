@@ -145,15 +145,6 @@ struct ItemDetailsView: View {
 //                }
 //            } //: NavigationStack
         ItemFormView(item: self.item)
-            .onAppear() {
-                // Update with Pre-Existing Data
-                titleTextField = item.title
-                infoTextField = item.info ?? ""
-                itemURL = item.itemURL ?? ""
-                if let userSettings = userSettingsArray.first {
-                    accentColor = Color(hex: userSettings.accentColor) ?? .red
-                }
-            }
             .accentColor(accentColor)
     }
 }

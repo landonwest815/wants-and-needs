@@ -14,15 +14,20 @@ struct ItemView: View {
     var item: ListItem
     @State private var isShowingSheet: Bool = false
     @State private var showConfirmation: Bool = false
-    
+        
     var body: some View {
           
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(spacing: 0) {
                 HStack{
                     Text(item.title)
                         .fontWeight(.semibold)
                         .font(.system(size:18))
                     Spacer()
+                    if item.price != nil && item.price != 0 {
+                        Text("$\(item.price ?? 0)")
+                            .fontWeight(.semibold)
+                            .font(.system(size:16))
+                    }
                 }
                 .padding(12.5)
                 
@@ -88,7 +93,6 @@ struct ItemView: View {
             }
             .padding(.horizontal, 30)
             .padding(.bottom, 10)
-        
     }
 }
 

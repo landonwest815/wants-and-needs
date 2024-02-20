@@ -23,12 +23,14 @@ struct ItemFormView: View {
     
     // User Inputs
     @State private var titleTextField: String = ""
+    @State var price: Int?
     @State private var itemImage: PhotosPickerItem?
     @State private var imageData: Data?
     @State private var itemURL: String = ""
     @State private var infoTextField: String = ""
     @FocusState var titleFocus: Bool
     @FocusState var additionalFocus: Bool
+    @FocusState var priceFocus: Bool
     
     init(item: ListItem?) {
         self.item = item
@@ -52,18 +54,26 @@ struct ItemFormView: View {
                         TextField("What is it?", text: $titleTextField)
                             .focused($titleFocus)
                             .onChange(of: titleTextField) {
-                                if item != nil {
                                     item?.title = titleTextField
-                                }
                             }
                     }
                     header: {
                         Text(self.isWant ?? true ? "Want" : "Need")
                     }
                 
-                Section {
-                    
-                }
+                // MARK: - Price Section
+                    Section {
+                        TextField("Amount", value: $price, format: .number)
+                            .focused($priceFocus)
+                            .keyboardType(.numberPad)
+                            .onChange(of: price) {
+                                self.item?.price = price
+                            }
+                            
+                    }
+                    header: {
+                        Text("Price")
+                    }
                 
                 // MARK: - Media Section
                     Section {
@@ -96,9 +106,7 @@ struct ItemFormView: View {
                                                     
                         LinkPickerView(enteredLink: $itemURL)
                             .onChange(of: itemURL) {
-                                if item != nil {
                                     item?.itemURL = itemURL
-                                }
                             }
                         
                     }
@@ -137,13 +145,12 @@ struct ItemFormView: View {
                                         Button("Done") {
                                             additionalFocus = false
                                             titleFocus = false
+                                            priceFocus = false
                                         }
                                     }
                                 }
                                 .onChange(of: infoTextField) {
-                                    if item != nil {
                                         item?.info = infoTextField
-                                    }
                                 }
                         }
                     }
@@ -154,6 +161,7 @@ struct ItemFormView: View {
                 } //: Form
             .navigationBarTitle(item?.title ?? "New Item")
             .toolbar {
+                // Existing Details
                 if item != nil {
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button {
@@ -163,20 +171,19 @@ struct ItemFormView: View {
                             Image(systemName: "trash")
                                 .foregroundColor(userSettingsArray.first.map { Color(hex: $0.accentColor) } ?? .red)
                                 .fontWeight(.medium)
-                            
                         }
                         .foregroundColor(.red)
                         .fontWeight(.heavy)
                     }
-                    
-                    
                 }
+                
+                // New creation
                 else {
                     // Add
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button("Add") {
                             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                            let item = ListItem(isWant: isWant ?? true, title: titleTextField, itemImage: imageData, itemURL: itemURL, info: infoTextField)
+                            let item = ListItem(isWant: isWant ?? true, title: titleTextField, price: price, itemImage: imageData, itemURL: itemURL, info: infoTextField)
                             context.insert(item)
                             dismiss()
                         }
@@ -192,6 +199,22 @@ struct ItemFormView: View {
             }
         } //: NavigationStack
         .accentColor(accentColor)
+        .onTapGesture{
+            additionalFocus = false
+            titleFocus = false
+            priceFocus = false
+        }
+        .onAppear() {
+            // Update with Pre-Existing Data
+            titleTextField = item?.title ?? ""
+            price = item?.price ?? nil
+            infoTextField = item?.info ?? ""
+            itemURL = item?.itemURL ?? ""
+            
+            if let userSettings = userSettingsArray.first {
+                accentColor = Color(hex: userSettings.accentColor) ?? .red
+            }
+        }
     }
 }
 
