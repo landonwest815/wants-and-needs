@@ -48,7 +48,7 @@ struct ListsView: View {
             // MARK: - List of Items
             ScrollView {
                 
-                HStack(spacing: 20) {
+                HStack(spacing: 15) {
                    
                     // Wants "Tab"
                     VStack {
@@ -113,9 +113,6 @@ struct ListsView: View {
                         ForEach(wantsSelected ? wants : needs, id: \.self) { item in
                             
                             ItemView(item: item)
-                                .padding(.horizontal, 30)
-                                .padding(.bottom, 20)
-                            
                                 // animation + effects
                                 .transition(.move(edge: wantsSelected ? .leading : .trailing))
                                 .scrollTransition { content, phase in
@@ -157,7 +154,7 @@ struct ListsView: View {
                                 .toolbar(.hidden, for: .tabBar)
                         }, label: {
                             Image(systemName: "gear")
-                                .fontWeight(.medium)
+                                .fontWeight(.semibold)
                                 .foregroundStyle(accent)
                         })
                         .simultaneousGesture(TapGesture().onEnded{

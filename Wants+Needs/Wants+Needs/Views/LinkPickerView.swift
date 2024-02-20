@@ -5,6 +5,10 @@
 //  Created by Landon West on 12/27/23.
 //
 
+
+// ADD KEYBOARD DONE BUTTON IN HERE
+
+
 import SwiftUI
 
 struct LinkPickerView: View {
@@ -16,14 +20,6 @@ struct LinkPickerView: View {
         HStack {
             // TextField for entering the link
             TextField("Enter a webpage", text: $enteredLink)
-//                .toolbar {
-//                    ToolbarItemGroup(placement: .keyboard) {
-//                        Spacer()
-//                        Button("Done") {
-//                            isInputActive = false
-//                        }
-//                    }
-//                }
                 .onSubmit {
                     submitLink()
                 }

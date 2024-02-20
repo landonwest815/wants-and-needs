@@ -16,36 +16,7 @@ struct ItemView: View {
     @State private var showConfirmation: Bool = false
     
     var body: some View {
-            // If a want is tapped, bring up its information using WantView
-//            Section {
-//                NavigationLink(item.title) {
-//                    ListItemView(item: item)
-//                }
-//                
-//                if let imageData = item.itemImage,
-//                   let uiImage = UIImage(data: imageData) {
-//                    HStack {
-//                        Image(uiImage: uiImage)
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fill)
-//                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                            .padding(.bottom, 10)
-//                            .padding(.leading, 5)
-//                            .padding(.trailing, 5)
-//
-//                    }
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                    .deleteDisabled(true)
-//                    .background(
-//                                NavigationLink("", destination: ListItemView(item: item))
-//                                    .opacity(0)
-//                                )
-//                
-//                }
-//            }
-//            .listSectionSpacing(25)
-//            .listRowSeparator(.hidden)
-        
+          
             VStack(alignment: .leading, spacing: 0) {
                 HStack{
                     Text(item.title)
@@ -74,9 +45,9 @@ struct ItemView: View {
             }
             .listRowSeparator(.hidden)
             .background(Color(uiColor: .systemGray6))
-            .cornerRadius(12.5)
+            .cornerRadius(17.5)
             .overlay(
-                RoundedRectangle(cornerRadius: 12.5, style: .circular).stroke(Color(uiColor: .systemGray3), lineWidth: 1)
+                RoundedRectangle(cornerRadius: 17.5, style: .circular).stroke(Color(uiColor: .systemGray3), lineWidth: 1)
             )
             .onTapGesture {
                 isShowingSheet.toggle()
@@ -111,6 +82,8 @@ struct ItemView: View {
             message: {
                 Text("Careful! This action is permanent and cannot be undone.")
             }
+            .padding(.horizontal, 30)
+            .padding(.bottom, 10)
         
     }
 }
