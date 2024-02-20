@@ -117,9 +117,9 @@ struct ListsView: View {
                                 .transition(.move(edge: wantsSelected ? .leading : .trailing))
                                 .scrollTransition { content, phase in
                                     content
-                                        .opacity(phase.isIdentity ? 1 : 0.85)
-                                        .scaleEffect(phase.isIdentity ? 1 : 0.95)
-                                        .blur(radius: phase.isIdentity ? 0 : 1)
+                                        .opacity(phase.isIdentity ? 1 : 0.8)
+                                        .scaleEffect(phase.isIdentity ? 1 : 0.9)
+                                        .blur(radius: phase.isIdentity ? 0 : 1.5)
                                 }
                         }
                     }

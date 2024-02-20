@@ -52,6 +52,10 @@ struct ItemView: View {
             .onTapGesture {
                 isShowingSheet.toggle()
             }
+            .simultaneousGesture(TapGesture().onEnded{
+                let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+                impactMedium.impactOccurred()
+            })
             .sheet(isPresented: $isShowingSheet) {
                 ItemDetailsView(item: item)
                     .presentationDragIndicator(.visible)
