@@ -14,10 +14,10 @@ import SwiftUI
 import SwiftData
 
 struct ListsView: View {
-        
+    
     // Swift Data
     @Environment(\.modelContext) var context
-        
+    
     // All Wants
     @Query(filter: #Predicate<ListItem> { item in
         item.isWant == true
@@ -36,7 +36,7 @@ struct ListsView: View {
     
     // Determines word usage and List Indicator at top of view
     @State private var wantsSelected: Bool = true
-
+    
     // UI
     var body: some View {
         
@@ -49,55 +49,55 @@ struct ListsView: View {
             ScrollView {
                 
                 HStack(spacing: 15) {
-                   
+                    
                     // Wants "Tab"
                     VStack {
                         Image(systemName: "heart.fill")
                             .foregroundStyle(wantsSelected ? accent : .white)
                         Text("Wants")
                     }
-                        .fontWeight(.bold)
-                        .font(wantsSelected ? .title : .title2)
-                        .opacity(wantsSelected ? 1.0 : 0.25)
-                        .scaleEffect(wantsSelected ? 1.1 : 1.0)
-                        .frame(width: 100, height: 100)
+                    .fontWeight(.bold)
+                    .font(wantsSelected ? .title : .title2)
+                    .opacity(wantsSelected ? 1.0 : 0.25)
+                    .scaleEffect(wantsSelected ? 1.1 : 1.0)
+                    .frame(width: 100, height: 100)
                     
-                        // animation + haptic
-                        .onTapGesture {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
-                                    wantsSelected = true
-                                    }
+                    // animation + haptic
+                    .onTapGesture {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                            wantsSelected = true
                         }
-                        .simultaneousGesture(TapGesture().onEnded{
-                            let impactMedium = UIImpactFeedbackGenerator(style: .medium)
-                            impactMedium.impactOccurred()
-                        })
+                    }
+                    .simultaneousGesture(TapGesture().onEnded{
+                        let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+                        impactMedium.impactOccurred()
+                    })
                     
                     VStack {
                         Image(systemName: "brain.fill")
                             .foregroundStyle(!wantsSelected ? accent : .white)
                         Text("Needs")
                     }
-                        .fontWeight(.bold)
-                        .font(wantsSelected ? .title2 : .title)
-                        .opacity(wantsSelected ? 0.25 : 1.0)
-                        .scaleEffect(!wantsSelected ? 1.1 : 1.0)
-                        .frame(width: 100, height: 100)
+                    .fontWeight(.bold)
+                    .font(wantsSelected ? .title2 : .title)
+                    .opacity(wantsSelected ? 0.25 : 1.0)
+                    .scaleEffect(!wantsSelected ? 1.1 : 1.0)
+                    .frame(width: 100, height: 100)
                     
-                        // animation + haptic
-                        .onTapGesture {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
-                                wantsSelected = false
-                            }
+                    // animation + haptic
+                    .onTapGesture {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                            wantsSelected = false
                         }
-                        .simultaneousGesture(TapGesture().onEnded{
-                            let impactMedium = UIImpactFeedbackGenerator(style: .medium)
-                            impactMedium.impactOccurred()
-                        })
-                        
+                    }
+                    .simultaneousGesture(TapGesture().onEnded{
+                        let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+                        impactMedium.impactOccurred()
+                    })
+                    
                 }
                 .frame(width: 300, height:100)
-                     
+                
                 // List of Selected Items
                 VStack {
                     
@@ -109,11 +109,11 @@ struct ListsView: View {
                             .opacity(0.5)
                     } else {
                         
-                    // Pull all the data
+                        // Pull all the data
                         ForEach(wantsSelected ? wants : needs, id: \.self) { item in
                             
                             ItemView(item: item)
-                                // animation + effects
+                            // animation + effects
                                 .transition(.move(edge: wantsSelected ? .leading : .trailing))
                                 .scrollTransition { content, phase in
                                     content
@@ -133,38 +133,77 @@ struct ListsView: View {
                 // Add
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     // MARK: - Add Want
-                        Button {
-                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                            isShowingSheet.toggle()
-                        } label: {
-                            Image(systemName: "pencil")
-                                .fontWeight(.heavy)
-                                .foregroundStyle(accent)
-                        }
-                        .sheet(isPresented: $isShowingSheet) {
-                            CreationView(isWant: wantsSelected)
-                                .presentationDragIndicator(.visible)
-                                .presentationDetents([.large])
-                        }
+                    Button {
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        isShowingSheet.toggle()
+                    } label: {
+                        Image(systemName: "pencil")
+                            .fontWeight(.heavy)
+                            .foregroundStyle(accent)
                     }
+                    .sheet(isPresented: $isShowingSheet) {
+                        CreationView(isWant: wantsSelected)
+                            .presentationDragIndicator(.visible)
+                            .presentationDetents([.large])
+                    }
+                }
                 // Cancel
                 ToolbarItemGroup(placement: .navigationBarLeading) {
-                        NavigationLink(destination: {
-                            SettingsView()
-                                .toolbar(.hidden, for: .tabBar)
-                        }, label: {
-                            Image(systemName: "gear")
-                                .fontWeight(.semibold)
-                                .foregroundStyle(accent)
-                        })
-                        .simultaneousGesture(TapGesture().onEnded{
-                            let impactMedium = UIImpactFeedbackGenerator(style: .medium)
-                            impactMedium.impactOccurred()
-                        })
+                    NavigationLink(destination: {
+                        SettingsView()
+                            .toolbar(.hidden, for: .tabBar)
+                    }, label: {
+                        Image(systemName: "gear")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(accent)
+                    })
+                    .simultaneousGesture(TapGesture().onEnded{
+                        let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+                        impactMedium.impactOccurred()
+                    })
                 }
             }
             .toolbarBackground(.hidden, for: .navigationBar)
         }
+        .gesture(DragGesture()
+            .onEnded { value in
+                print("value ",value.translation.width)
+                let direction = self.detectDirection(value: value)
+                if direction == .left && !wantsSelected {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                        wantsSelected = true
+                    }
+                }
+                if direction == .right && wantsSelected {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                        wantsSelected = false
+                    }
+                }
+            }
+        )
+    }
+    
+    
+    // from: https://stackoverflow.com/questions/59109138/how-to-implement-a-left-or-right-draggesture-that-trigger-a-switch-case-in-swi
+    
+    enum SwipeHVDirection: String {
+        case left, right, up, down, none
+    }
+    
+    func detectDirection(value: DragGesture.Value) -> SwipeHVDirection {
+        if value.startLocation.x < value.location.x - 24 {
+            return .left
+        }
+        if value.startLocation.x > value.location.x + 24 {
+            return .right
+        }
+        if value.startLocation.y < value.location.y - 24 {
+            return .down
+        }
+        if value.startLocation.y > value.location.y + 24 {
+            return .up
+        }
+        return .none
     }
 }
 
