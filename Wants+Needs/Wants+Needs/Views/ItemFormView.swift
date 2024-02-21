@@ -107,7 +107,8 @@ struct ItemFormView: View {
                                                     
                         LinkPickerView(enteredLink: $itemURL)
                             .onChange(of: itemURL) {
-                                    item?.itemURL = itemURL
+                                item?.itemURL = itemURL
+                                try? context.save()
                             }
                             .focused($titleFocus)
                         

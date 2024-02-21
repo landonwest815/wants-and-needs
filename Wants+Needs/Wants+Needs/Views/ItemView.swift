@@ -106,7 +106,7 @@ struct ItemView: View {
             }
             .padding(.horizontal, 30)
             .padding(.bottom, 10)
-            .onAppear() {
+            .onChange(of: item.itemURL) {
                 submitLink()
             }
     }
