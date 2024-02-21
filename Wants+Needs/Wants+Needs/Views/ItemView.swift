@@ -14,6 +14,7 @@ struct ItemView: View {
     var item: ListItem
     @State private var isShowingSheet: Bool = false
     @State private var showConfirmation: Bool = false
+    @State private var submittedLink: URL?
         
     var body: some View {
           
@@ -33,7 +34,7 @@ struct ItemView: View {
                 
                 if let imageData = item.itemImage,
                    let uiImage = UIImage(data: imageData) {
-                    HStack {
+                    ZStack {
                         Image(uiImage: uiImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -44,6 +45,18 @@ struct ItemView: View {
                             )
                             .padding(.horizontal, 12.5)
                             .padding(.bottom, 12.5)
+                        VStack {
+                            Spacer()
+                            HStack() {
+                                Spacer()
+                                if let url = submittedLink {
+                                        Link(destination: url) {
+                                        Image(systemName: "link")
+                                    }
+                                }
+                            }
+                        }
+                        .padding(25)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -93,6 +106,31 @@ struct ItemView: View {
             }
             .padding(.horizontal, 30)
             .padding(.bottom, 10)
+            .onAppear() {
+                submitLink()
+            }
+    }
+    
+    private func submitLink() {
+        // Adjust the enteredLink to include "http://" if it doesn't already contain "http"
+        if let enteredLink = item.itemURL {
+            var linkToValidate = enteredLink
+            if !linkToValidate.contains("http") {
+                linkToValidate = "http://\(linkToValidate)"
+            }
+            
+            // Basic check to see if the URL contains a dot after the protocol
+            let hasDotAfterProtocol = linkToValidate.range(of: "http[s]?://[^/]+\\.", options: .regularExpression) != nil
+            
+            // Validate and convert the adjusted link to a URL
+            if hasDotAfterProtocol, let url = URL(string: linkToValidate), UIApplication.shared.canOpenURL(url) {
+                submittedLink = url
+            } else {
+                // Handle invalid URL
+                print("Invalid URL")
+                submittedLink = nil
+            }
+        }
     }
 }
 

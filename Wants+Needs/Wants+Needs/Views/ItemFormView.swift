@@ -31,6 +31,7 @@ struct ItemFormView: View {
     @FocusState var titleFocus: Bool
     @FocusState var additionalFocus: Bool
     @FocusState var priceFocus: Bool
+    @FocusState var urlFocus: Bool
     
     init(item: ListItem?) {
         self.item = item
@@ -87,9 +88,9 @@ struct ItemFormView: View {
                                 .padding(5)
                         }
                                                     
-                            PhotosPicker(selection: $itemImage, matching: .images) {
-                                Label("Select image", systemImage: "photo")
-                            }
+                        PhotosPicker(selection: $itemImage, matching: .images) {
+                            Label("Select image", systemImage: "photo")
+                        }
                                                         
                         if item?.itemImage != nil || imageData != nil {
                                 Button(role: .destructive) {
@@ -108,6 +109,7 @@ struct ItemFormView: View {
                             .onChange(of: itemURL) {
                                     item?.itemURL = itemURL
                             }
+                            .focused($titleFocus)
                         
                     }
                     header: {
@@ -146,6 +148,7 @@ struct ItemFormView: View {
                                             additionalFocus = false
                                             titleFocus = false
                                             priceFocus = false
+                                            urlFocus = false
                                         }
                                     }
                                 }
@@ -197,13 +200,13 @@ struct ItemFormView: View {
                     }
                 }
             }
+//            .onTapGesture{
+//                additionalFocus = false
+//                titleFocus = false
+//                priceFocus = false
+//            }
         } //: NavigationStack
         .accentColor(accentColor)
-        .onTapGesture{
-            additionalFocus = false
-            titleFocus = false
-            priceFocus = false
-        }
         .onAppear() {
             // Update with Pre-Existing Data
             titleTextField = item?.title ?? ""
