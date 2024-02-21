@@ -109,6 +109,9 @@ struct ItemView: View {
             .onChange(of: item.itemURL) {
                 submitLink()
             }
+            .onAppear() {
+                submitLink()
+            }
     }
     
     private func submitLink() {
