@@ -23,8 +23,10 @@ struct ItemView: View {
         VStack(spacing: 0) {
                 HStack{
                     HStack {
-                        Image(systemName: item.favorite ? "star.fill" : "")
-                            .foregroundStyle(Color(hex: userData.first?.accentColor ?? "FFFFFF") ?? .red)
+                        if item.favorite == true {
+                            Image(systemName: "star.fill")
+                                .foregroundStyle(Color(hex: userData.first?.accentColor ?? "FFFFFF") ?? .red)
+                        }
                         Text(item.title)
                             .fontWeight(.semibold)
                             .font(.system(size:18))

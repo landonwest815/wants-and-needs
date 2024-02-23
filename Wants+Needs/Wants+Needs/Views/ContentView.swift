@@ -37,6 +37,13 @@ struct ContentView: View {
             context.insert(newUserSettings)
         }
         
+//        do {
+//            try context.delete(model: ListItem.self)
+//            try context.delete(model: UserSettings.self)
+//        } catch {
+//            print("error")
+//        }
+        
     }
 }
 

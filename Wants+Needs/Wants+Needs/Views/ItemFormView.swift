@@ -34,6 +34,8 @@ struct ItemFormView: View {
     @FocusState var priceFocus: Bool
     @FocusState var urlFocus: Bool
     
+    @State private var showConfirmation: Bool = false
+    
     init(item: ListItem?) {
         self.item = item
         self.isWant = item?.isWant
@@ -187,12 +189,15 @@ struct ItemFormView: View {
                         }
                         .foregroundColor(.red)
                         .fontWeight(.heavy)
+                        .simultaneousGesture(TapGesture().onEnded{
+                            let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+                            impactMedium.impactOccurred()
+                        })
                     }
                     
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button {
-                            context.delete(item!)
-                            dismiss()
+                            showConfirmation = true
                         } label: {
                             Image(systemName: "trash")
                                 .foregroundColor(userSettingsArray.first.map { Color(hex: $0.accentColor) } ?? .red)
@@ -200,8 +205,14 @@ struct ItemFormView: View {
                         }
                         .foregroundColor(.red)
                         .fontWeight(.heavy)
+                        .simultaneousGesture(TapGesture().onEnded{
+                            let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+                            impactMedium.impactOccurred()
+                        })
                     }
                 }
+                
+                
                 
                 
                 // New creation
@@ -223,6 +234,21 @@ struct ItemFormView: View {
                         }
                     }
                 }
+            }
+            .confirmationDialog("Are you sure you want to delete this \(item?.isWant ?? false ? "Want" : "Need")?", isPresented: $showConfirmation) {
+                Button("Delete it!", role: .destructive, action: {
+                    if let deletedItem = item {
+                        context.delete(deletedItem)
+                    } else {
+                        dismiss()
+                    }
+                })
+                
+                // This button overrides the default Cancel button.
+                Button("Mmm.. nevermind", role: .cancel, action: {})
+            }
+            message: {
+                Text("Careful! This action is permanent and cannot be undone.")
             }
 //            .onTapGesture{
 //                additionalFocus = false
