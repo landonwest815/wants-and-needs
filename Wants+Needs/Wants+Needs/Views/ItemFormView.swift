@@ -22,6 +22,7 @@ struct ItemFormView: View {
     let isWant: Bool?
     
     // User Inputs
+    @State private var favorited: Bool = false
     @State private var titleTextField: String = ""
     @State var price: Int?
     @State private var itemImage: PhotosPickerItem?
@@ -61,6 +62,7 @@ struct ItemFormView: View {
                     header: {
                         Text(self.isWant ?? true ? "Want" : "Need")
                     }
+                    .listRowBackground(Color(.systemGray5))
                 
                 // MARK: - Price Section
                     Section {
@@ -75,6 +77,7 @@ struct ItemFormView: View {
                     header: {
                         Text("Price")
                     }
+                    .listRowBackground(Color(.systemGray5))
                 
                 // MARK: - Media Section
                     Section {
@@ -87,6 +90,7 @@ struct ItemFormView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .padding(5)
                         }
+                        
                                                     
                         PhotosPicker(selection: $itemImage, matching: .images) {
                             Label("Select image", systemImage: "photo")
@@ -131,6 +135,7 @@ struct ItemFormView: View {
                         
                     }
                     .listRowSeparator(.hidden)
+                    .listRowBackground(Color(.systemGray5))
                 
                 
                 
@@ -161,12 +166,29 @@ struct ItemFormView: View {
                     header: {
                         Text("Additional Comments")
                     }
+                    .listRowBackground(Color(.systemGray5))
                     
                 } //: Form
-            .navigationBarTitle(item?.title ?? "New Item")
+            .frame(maxHeight: .infinity)
+            .scrollContentBackground(.hidden)
+            .background(Color(.systemGray6))
+            //.navigationBarTitle(item?.title ?? "New Item")
             .toolbar {
                 // Existing Details
                 if item != nil {
+                    ToolbarItemGroup(placement: .topBarLeading) {
+                        Button {
+                            item?.favorite.toggle()
+                            favorited.toggle()
+                        } label: {
+                            Image(systemName: favorited ? "star.fill" : "star")
+                                .foregroundColor(userSettingsArray.first.map { Color(hex: $0.accentColor) } ?? .red)
+                                .fontWeight(.medium)
+                        }
+                        .foregroundColor(.red)
+                        .fontWeight(.heavy)
+                    }
+                    
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button {
                             context.delete(item!)
@@ -181,20 +203,21 @@ struct ItemFormView: View {
                     }
                 }
                 
+                
                 // New creation
                 else {
                     // Add
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button("Add") {
                             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                            let item = ListItem(isWant: isWant ?? true, title: titleTextField, price: price, itemImage: imageData, itemURL: itemURL, info: infoTextField)
+                            let item = ListItem(isWant: isWant ?? true, favorite: favorited, title: titleTextField, price: price, itemImage: imageData, itemURL: itemURL, info: infoTextField)
                             context.insert(item)
                             dismiss()
                         }
                         .disabled(titleTextField.isEmpty)
                     }
                     //Cancel
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                    ToolbarItemGroup(placement: .topBarLeading) {
                         Button("Cancel") {
                             dismiss()
                         }
@@ -207,9 +230,18 @@ struct ItemFormView: View {
 //                priceFocus = false
 //            }
         } //: NavigationStack
+        .cornerRadius(17.5)
+        .overlay(
+            RoundedRectangle(cornerRadius: 17.5, style: .circular).stroke(Color(uiColor: .systemGray3), lineWidth: 1)
+        )
+        .frame(maxHeight: .infinity)
+        .padding(.horizontal, 15)
+        .padding(.bottom, 15)
+        .padding(.top, 1)
         .accentColor(accentColor)
         .onAppear() {
             // Update with Pre-Existing Data
+            favorited = item?.favorite ?? false
             titleTextField = item?.title ?? ""
             price = item?.price ?? nil
             infoTextField = item?.info ?? ""

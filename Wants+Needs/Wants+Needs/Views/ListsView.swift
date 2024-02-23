@@ -21,7 +21,7 @@ struct ListsView: View {
     // All Wants
     @Query(filter: #Predicate<ListItem> { item in
         item.isWant == true
-    }) var wants: [ListItem]
+    },     sort: [SortDescriptor(\ListItem.favorite, order: .reverse)]) var wants: [ListItem]
     
     // All Needs
     @Query(filter: #Predicate<ListItem> { item in
@@ -113,6 +113,7 @@ struct ListsView: View {
                         ForEach(wantsSelected ? wants : needs, id: \.self) { item in
                             
                             ItemView(item: item)
+                                .frame(maxHeight: .infinity)
                             // animation + effects
                                 .transition(.move(edge: wantsSelected ? .leading : .trailing))
                                 .scrollTransition { content, phase in
@@ -125,7 +126,7 @@ struct ListsView: View {
                     }
                     Spacer()
                 }
-                .frame(minHeight: 200)
+                .frame(maxHeight: .infinity)
             }
             .frame(minWidth: 100, minHeight: 500)
             .scrollIndicators(.hidden)
@@ -142,9 +143,12 @@ struct ListsView: View {
                             .foregroundStyle(accent)
                     }
                     .sheet(isPresented: $isShowingSheet) {
-                        CreationView(isWant: wantsSelected)
+                        ZStack {
+                            Color.black.edgesIgnoringSafeArea(.all)
+                            CreationView(isWant: wantsSelected)
+                        }
                             .presentationDragIndicator(.visible)
-                            .presentationDetents([.large])
+                            .presentationDetents([.fraction(0.9)])
                     }
                 }
                 // Cancel

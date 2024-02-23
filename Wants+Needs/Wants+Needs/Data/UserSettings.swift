@@ -14,6 +14,8 @@ class UserSettings {
     var accentColor: String
     var appIcon: Int
     
+    var selectedItem: ListItem?
+    
     init() {
         accentColor = "ff0000"
         appIcon = 1

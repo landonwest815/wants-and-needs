@@ -11,6 +11,8 @@ import SwiftData
 struct ItemView: View {
     
     @Environment(\.modelContext) var context
+    @Query private var userData : [UserSettings]
+    
     var item: ListItem
     @State private var isShowingSheet: Bool = false
     @State private var showConfirmation: Bool = false
@@ -18,11 +20,15 @@ struct ItemView: View {
         
     var body: some View {
           
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
                 HStack{
-                    Text(item.title)
-                        .fontWeight(.semibold)
-                        .font(.system(size:18))
+                    HStack {
+                        Image(systemName: item.favorite ? "star.fill" : "")
+                            .foregroundStyle(Color(hex: userData.first?.accentColor ?? "FFFFFF") ?? .red)
+                        Text(item.title)
+                            .fontWeight(.semibold)
+                            .font(.system(size:18))
+                    }
                     Spacer()
                     if item.price != nil && item.price != 0 {
                         Text("$\(item.price ?? 0)")
@@ -75,10 +81,10 @@ struct ItemView: View {
                 impactMedium.impactOccurred()
             })
             .sheet(isPresented: $isShowingSheet) {
-                ItemDetailsView(item: item)
-                    .presentationDragIndicator(.visible)
-                    .presentationDetents([.large])
-            }
+                ZStack {                Color.black.edgesIgnoringSafeArea(.all)
+                    ItemDetailsView(item: item)
+                }                     .presentationDragIndicator(.visible)                     .presentationDetents([.fraction(0.9)])
+                }
             .contextMenu {
                 Button {
                     item.isWant.toggle()
