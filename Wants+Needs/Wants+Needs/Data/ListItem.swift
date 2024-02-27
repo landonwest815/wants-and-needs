@@ -1,14 +1,14 @@
 //
 //  ListItem.swift
-//  Wants+Needs
+//  Wants&Needs
 //
 //  Created by Landon West on 12/21/23.
 //
 //  This class represents a Want or Need.
 //  Each Want or Need must have a simple title.
-//  They can also have additonal media or comments.
-//  isWant Bool tells the program whether it is a want
-//  or need.
+//  They can also have additonal media, comments, or
+//  even a price. The isWant Bool tells the app whether
+//  it is a Want or Need.
 //
 
 import Foundation
@@ -17,23 +17,24 @@ import SwiftUI
 
 @Model
 class ListItem {
-    // Data
+    // Saved Data
     var isWant: Bool
     var favorite: Bool
     var title: String
+    // Optionals
     var price: Int?
-    @Attribute(.externalStorage) var itemImage: Data?   // OPTIONAL
+    @Attribute(.externalStorage) var itemImage: Data? // It is better to save image data externally
     var itemURL: String?
-    var info: String?                                   // OPTIONAL
+    var info: String?
     
-    // Just a title
+    // Initializing with just a title
     init(isWant: Bool, title: String) {
         self.isWant = isWant
         self.title = title
         self.favorite = false
     }
     
-    // Title + Media / Additional Info
+    // Initializing with any additional info
     init(isWant: Bool, favorite: Bool? = false, title: String, price: Int? = nil, itemImage: Data? = nil, itemURL: String? = nil, info: String? = nil) {
         self.isWant = isWant
         self.favorite = favorite ?? false

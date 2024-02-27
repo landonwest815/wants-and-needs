@@ -10,18 +10,28 @@ import SwiftData
 
 struct ItemView: View {
     
+    // Pull Data
     @Environment(\.modelContext) var context
     @Query private var userData : [UserSettings]
     
+    // Passed in Item to display
     var item: ListItem
+    
+    // Allows user to open up item details
     @State private var isShowingSheet: Bool = false
+    
+    // Prompts upon item deletion
     @State private var showConfirmation: Bool = false
+    
+    // Allows user to navigate directly to the webpage
     @State private var submittedLink: URL?
         
     var body: some View {
           
         VStack(spacing: 0) {
                 HStack{
+                    
+                    // MARK: - Item Title (with optional Star)
                     HStack {
                         if item.favorite == true {
                             Image(systemName: "star.fill")
@@ -31,15 +41,20 @@ struct ItemView: View {
                             .fontWeight(.semibold)
                             .font(.system(size:18))
                     }
+                    
                     Spacer()
+                    
+                    // MARK: - Item Price (if applicable)
                     if item.price != nil && item.price != 0 {
                         Text("$\(item.price ?? 0)")
                             .fontWeight(.semibold)
                             .font(.system(size:16))
                     }
+                    
                 }
                 .padding(12.5)
                 
+                // MARK: - Displayed Image
                 if let imageData = item.itemImage,
                    let uiImage = UIImage(data: imageData) {
                     ZStack {
@@ -54,7 +69,10 @@ struct ItemView: View {
                             .padding(.horizontal, 12.5)
                             .padding(.bottom, 12.5)
                         VStack {
+                            
                             Spacer()
+                            
+                            // MARK: - Link (if applicable)
                             HStack() {
                                 Spacer()
                                 if let url = submittedLink {
@@ -63,6 +81,7 @@ struct ItemView: View {
                                     }
                                 }
                             }
+                            
                         }
                         .padding(25)
                     }
@@ -76,6 +95,7 @@ struct ItemView: View {
                 RoundedRectangle(cornerRadius: 17.5, style: .circular).stroke(Color(uiColor: .systemGray3), lineWidth: 1)
             )
             .onTapGesture {
+                // Show details Form
                 isShowingSheet.toggle()
             }
             .simultaneousGesture(TapGesture().onEnded{
@@ -84,16 +104,28 @@ struct ItemView: View {
             })
             .sheet(isPresented: $isShowingSheet) {
                 ZStack {                Color.black.edgesIgnoringSafeArea(.all)
-                    ItemDetailsView(item: item)
-                }                     .presentationDragIndicator(.visible)                     .presentationDetents([.fraction(0.9)])
-                }
+                    ItemFormView(item: item)
+                }                       .presentationDragIndicator(.visible)         .presentationDetents([.fraction(0.9)])
+            }
+        
+            // Long Press Options
             .contextMenu {
+                
+                // MARK: - Quick Favorite
+                Button {
+                    item.favorite.toggle()
+                } label: {
+                    Label(item.favorite ? "Unfavorite" : "Favorite", systemImage: item.favorite ? "star" : "star.fill")
+                }
+                
+                // MARK: - Quick Type Switch
                 Button {
                     item.isWant.toggle()
                 } label: {
                     Label("Switch to \(item.isWant ? "Need" : "Want")", systemImage: item.isWant ? "brain.fill" : "heart.fill")
                 }
                 
+                // MARK: - Quick Deletion
                 Button(role: .destructive) {
                     showConfirmation = true
                 } label: {
@@ -101,6 +133,8 @@ struct ItemView: View {
                 }
                     
             }
+        
+            // Item deletion confirmation
             .confirmationDialog("Are you sure you want to delete this \(item.isWant ? "Want" : "Need")?", isPresented: $showConfirmation) {
                 Button("Delete it!", role: .destructive, action: {
                         context.delete(item)
@@ -114,6 +148,8 @@ struct ItemView: View {
             }
             .padding(.horizontal, 30)
             .padding(.bottom, 10)
+            
+            // Update Link information
             .onChange(of: item.itemURL) {
                 submitLink()
             }
@@ -122,6 +158,9 @@ struct ItemView: View {
             }
     }
     
+    // Resused from LinkPickerView()
+    // Yes I know this is a bad thing and should be pulled out
+    // into only one use.
     private func submitLink() {
         // Adjust the enteredLink to include "http://" if it doesn't already contain "http"
         if let enteredLink = item.itemURL {
@@ -147,7 +186,8 @@ struct ItemView: View {
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-       let container = try! ModelContainer(for: ListItem.self, configurations: config)
+    
+    let container = try! ModelContainer(for: ListItem.self, configurations: config)
     
     let image: UIImage = .checkmark
     

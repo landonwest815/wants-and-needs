@@ -10,16 +10,21 @@ import SwiftData
 
 struct SettingsView: View {
     
-    // SwiftData
+    // Allows this view to be dismissed
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) var context
     
+    // Pull Data
+    @Environment(\.modelContext) var context
     @Query var userSettingsArray: [UserSettings]
+    
+    // These are updated during onAppear()
     @State private var accentColor: Color = .purple
     @State private var appIcon: Int = 1
     
+    // Prompts upon Data Reset
     @State private var showConfirmation = false
 
+    // Determines the start of the file name
     private let alternateAppIcons: [String] = [
     "AppIcon1",
     "AppIcon2"
@@ -32,7 +37,7 @@ struct SettingsView: View {
             
             Form {
                 
-                // MARK: - Title
+                // MARK: - Accent Color Selection
                 Section {
                     LabeledContent {
                         
@@ -52,10 +57,11 @@ struct SettingsView: View {
                         }
                     }
                 }
-            header: {
-                Text("Customization")
-            }
+                header: {
+                    Text("Customization")
+                }
                 
+                // MARK: - App Icon Selection
                 Section {
                     HStack {
                         Spacer()
@@ -88,6 +94,7 @@ struct SettingsView: View {
                 .padding(.vertical, -10)
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
                 
+                // MARK: - Reset Data
                 Section {
                     Button {
                         showConfirmation = true
@@ -100,6 +107,9 @@ struct SettingsView: View {
                                 do {
                                     try context.delete(model: ListItem.self)
                                     try context.delete(model: UserSettings.self)
+                                    let newUserSettings = UserSettings()
+                                    context.insert(newUserSettings)
+                                    pullFromUserSettings()
                                 } catch {
                                     print("Failed to clear all data.")
                                 }
@@ -116,6 +126,7 @@ struct SettingsView: View {
                     Text("Data")
                 }
                 
+                // MARK: - Developer Info
                 Section {
                     HStack {
 
@@ -144,17 +155,17 @@ struct SettingsView: View {
                     Text("Developer Info")
                 }
             }
-                                        
-            }
-            .navigationBarTitle("Settings")
-            .onAppear() {
-                pullFromUserSettings()
-            }
-            .onChange(of: accentColor) {
-                updateAccentColorInUserSettings()
-            }
         }
+        .navigationBarTitle("Settings")
+        .onAppear() {
+            pullFromUserSettings()
+        }
+        .onChange(of: accentColor) {
+            updateAccentColorInUserSettings()
+        }
+    }
     
+    /* This private helper method updates the selected color in Data so it can relay throughout the app. */
     private func updateAccentColorInUserSettings() {
         if let userSettings = userSettingsArray.first {
             userSettings.accentColor = accentColor.toHex() ?? "ff0000"
@@ -162,6 +173,7 @@ struct SettingsView: View {
         }
     }
     
+    /* This allows the SettingsView to be up to date Accent Color wise and App Icon wise*/
     private func pullFromUserSettings() {
         if let userSettings = userSettingsArray.first {
             accentColor = Color(hex: userSettings.accentColor) ?? .red
@@ -169,27 +181,30 @@ struct SettingsView: View {
         }
     }
     
+    /* This private helper method allows for App Icon changing in a traditional XCode Project. This lost its functionality within the Playground Package but I wanted to leave it in here. */
     private func setApplicationIconName(iconName: String) {
-            if UIApplication.shared.responds(to: #selector(getter: UIApplication.supportsAlternateIcons)) && UIApplication.shared.supportsAlternateIcons {
-                
-                typealias setAlternateIconName = @convention(c) (NSObject, Selector, NSString, @escaping (NSError) -> ()) -> ()
-                
-                let selectorString = "_setAlternateIconName:completionHandler:"
-                
-                let selector = NSSelectorFromString(selectorString)
-                let imp = UIApplication.shared.method(for: selector)
-                let method = unsafeBitCast(imp, to: setAlternateIconName.self)
-                method(UIApplication.shared, selector, iconName as NSString, { _ in })
-            }
+        if UIApplication.shared.responds(to: #selector(getter: UIApplication.supportsAlternateIcons)) && UIApplication.shared.supportsAlternateIcons {
+            
+            typealias setAlternateIconName = @convention(c) (NSObject, Selector, NSString, @escaping (NSError) -> ()) -> ()
+            
+            let selectorString = "_setAlternateIconName:completionHandler:"
+            
+            let selector = NSSelectorFromString(selectorString)
+            let imp = UIApplication.shared.method(for: selector)
+            let method = unsafeBitCast(imp, to: setAlternateIconName.self)
+            method(UIApplication.shared, selector, iconName as NSString, { _ in })
         }
-        
+    }
 }
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-       let container = try! ModelContainer(for: ListItem.self, UserSettings.self, configurations: config)
+   
+    let container = try! ModelContainer(for: ListItem.self, UserSettings.self, configurations: config)
+    
     let userSettings =  UserSettings()
     userSettings.accentColor = "ff0000"
+    
     container.mainContext.insert(userSettings)
 
     return SettingsView()

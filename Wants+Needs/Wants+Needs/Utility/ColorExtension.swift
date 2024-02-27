@@ -1,13 +1,14 @@
 //
 //  ColorExtension.swift
-//  Wants+Needs
-//
-//  Created by Landon West on 12/22/23.
+//  Wants&Needs
 //
 //  This class was retrieved from:
 //  https://blog.eidinger.info/from-hex-to-color-and-back-in-swiftui
 //
-//  It allows for conversion from hex to Color()
+//  This extension of Color allows us to create Color
+//  instances from a Hex String. This is how I decided
+//  to go about settings accent colors in SwiftData as
+//  strings are much easier to store.
 //
 
 import Foundation

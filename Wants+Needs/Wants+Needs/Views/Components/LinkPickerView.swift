@@ -1,24 +1,24 @@
 //
 //  LinkPickerView.swift
-//  Wants+Needs
+//  Wants&Needs
 //
-//  Created by Landon West on 12/27/23.
+//  This view allows us to simply enter a string input and
+//  have it check if it's a valid URL. If so, a Link
+//  component is provided.
 //
-
-
-// ADD KEYBOARD DONE BUTTON IN HERE
-
 
 import SwiftUI
 
 struct LinkPickerView: View {
+    // Binds with ItemFormView to allow the string to be saved to Data
     @Binding var enteredLink: String
+    // This is updated if the link is valid using SubmitLink() below
     @State private var submittedLink: URL?
+    // This allows us to make use of a "done" button on the keyboard
     @FocusState var isInputActive: Bool
 
     var body: some View {
         HStack {
-            // TextField for entering the link
             TextField("Enter a webpage", text: $enteredLink)
                 .onSubmit {
                     submitLink()
@@ -27,18 +27,20 @@ struct LinkPickerView: View {
                 .textContentType(.URL)
                 .autocapitalization(.none)
 
-            // Display the submitted link as a clickable text, if available
+            // Display a link button if valid
             if let url = submittedLink {
                 Link(destination: url) {
                     Image(systemName: "link")
                 }
             }
         }
+        // For exiting links via Data
         .onAppear {
             submitLink()
         }
     }
 
+    /* This private helper method will read the entered string upon submission and check if it is valid. It will also take care of appending any web address related protocols. */
     private func submitLink() {
         // Adjust the enteredLink to include "http://" if it doesn't already contain "http"
         var linkToValidate = enteredLink

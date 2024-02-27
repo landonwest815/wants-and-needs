@@ -11,36 +11,48 @@ import PhotosUI
 
 struct ItemFormView: View {
    
-    // SwiftData
+    // Closes Confirmations or Opened Views
     @Environment(\.dismiss) var dismiss
+    
+    // Pull Data
     @Environment(\.modelContext) var context
     @Query var userSettingsArray: [UserSettings]
+    
+    // Default the accent color to red
+    // This gets set during onAppear()
     @State private var accentColor: Color = .red
 
-    // Passed in want
+    // Passed in data for an existing item
     let item: ListItem?
+    
+    // Passed in data for a new item
     let isWant: Bool?
     
     // User Inputs
-    @State private var favorited: Bool = false
+    @State private var favorited: Bool = false // not on default
     @State private var titleTextField: String = ""
     @State var price: Int?
     @State private var itemImage: PhotosPickerItem?
     @State private var imageData: Data?
     @State private var itemURL: String = ""
     @State private var infoTextField: String = ""
+    
+    // Allows keyboard dismissal using "done" toolbar button
     @FocusState var titleFocus: Bool
     @FocusState var additionalFocus: Bool
     @FocusState var priceFocus: Bool
     @FocusState var urlFocus: Bool
     
+    // Prompts the deletion confirmation
     @State private var showConfirmation: Bool = false
     
+    // For existing items
     init(item: ListItem?) {
         self.item = item
         self.isWant = item?.isWant
     }
     
+    // For item creation
     init(isWant: Bool) {
         self.item = nil
         self.isWant = isWant
@@ -58,7 +70,7 @@ struct ItemFormView: View {
                         TextField("What is it?", text: $titleTextField)
                             .focused($titleFocus)
                             .onChange(of: titleTextField) {
-                                    item?.title = titleTextField
+                                item?.title = titleTextField
                             }
                     }
                     header: {
@@ -74,7 +86,6 @@ struct ItemFormView: View {
                             .onChange(of: price) {
                                 self.item?.price = price
                             }
-                            
                     }
                     header: {
                         Text("Price")
@@ -83,6 +94,8 @@ struct ItemFormView: View {
                 
                 // MARK: - Media Section
                     Section {
+                        // MARK: - Displayed Image
+                        // Display image if data is valid
                         if let imageData = item != nil ? item?.itemImage : imageData,
                            let uiImage = UIImage(data: imageData) {
                             Image(uiImage: uiImage)
@@ -93,11 +106,13 @@ struct ItemFormView: View {
                                 .padding(5)
                         }
                         
-                                                    
+                        // MARK: - Image Picker
                         PhotosPicker(selection: $itemImage, matching: .images) {
                             Label("Select image", systemImage: "photo")
                         }
-                                                        
+                              
+                        // MARK: - Image Deletion
+                        // Allow photo deletion after photo insertion
                         if item?.itemImage != nil || imageData != nil {
                                 Button(role: .destructive) {
                                     withAnimation {
@@ -109,15 +124,15 @@ struct ItemFormView: View {
                                     Label("Remove Image", systemImage: "xmark")
                                         .foregroundColor(.red)
                                 }
-                            }
-                                                    
+                        }
+                                    
+                        // MARK: - Link Picker
                         LinkPickerView(enteredLink: $itemURL)
                             .onChange(of: itemURL) {
                                 item?.itemURL = itemURL
                                 try? context.save()
                             }
                             .focused($titleFocus)
-                        
                     }
                     header: {
                         Text("Media")
@@ -139,19 +154,18 @@ struct ItemFormView: View {
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color(.systemGray5))
                 
-                
-                
-                    
                 // MARK: - Additional Info Section
                     Section {
                         ZStack {
                             TextField("Anything Else?", text: $infoTextField, axis: .vertical)
                                 .focused($additionalFocus)
+                            // This allows for movement to the next line
                             Text(infoTextField).opacity(0).padding(.all, 8)
                                 .toolbar {
                                     ToolbarItemGroup(placement: .keyboard) {
                                         Spacer()
                                         
+                                        // Unfocus all inputs to dismiss the keyboard
                                         Button("Done") {
                                             additionalFocus = false
                                             titleFocus = false
@@ -171,117 +185,114 @@ struct ItemFormView: View {
                     .listRowBackground(Color(.systemGray5))
                     
                 } //: Form
-            .frame(maxHeight: .infinity)
-            .scrollContentBackground(.hidden)
-            .background(Color(.systemGray6))
-            //.navigationBarTitle(item?.title ?? "New Item")
-            .toolbar {
-                // Existing Details
-                if item != nil {
-                    ToolbarItemGroup(placement: .topBarLeading) {
-                        Button {
-                            item?.favorite.toggle()
-                            favorited.toggle()
-                        } label: {
-                            Image(systemName: favorited ? "star.fill" : "star")
-                                .foregroundColor(userSettingsArray.first.map { Color(hex: $0.accentColor) } ?? .red)
-                                .fontWeight(.medium)
-                        }
-                        .foregroundColor(.red)
-                        .fontWeight(.heavy)
-                        .simultaneousGesture(TapGesture().onEnded{
-                            let impactMedium = UIImpactFeedbackGenerator(style: .medium)
-                            impactMedium.impactOccurred()
-                        })
-                    }
+                .frame(maxHeight: .infinity)
+                .scrollContentBackground(.hidden)
+                .background(Color(.systemGray6))
+                .toolbar {
                     
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        Button {
-                            showConfirmation = true
-                        } label: {
-                            Image(systemName: "trash")
-                                .foregroundColor(userSettingsArray.first.map { Color(hex: $0.accentColor) } ?? .red)
-                                .fontWeight(.medium)
+                    // Existing Details
+                    if item != nil {
+                        
+                        // MARK: - Favorite Button
+                        ToolbarItemGroup(placement: .topBarLeading) {
+                            Button {
+                                item?.favorite.toggle()
+                                favorited.toggle()
+                            } label: {
+                                Image(systemName: favorited ? "star.fill" : "star")
+                                    .foregroundColor(userSettingsArray.first.map { Color(hex: $0.accentColor) } ?? .red)
+                                    .fontWeight(.medium)
+                            }
+                            .fontWeight(.heavy)
+                            .simultaneousGesture(TapGesture().onEnded{
+                                let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+                                impactMedium.impactOccurred()
+                            })
                         }
-                        .foregroundColor(.red)
-                        .fontWeight(.heavy)
-                        .simultaneousGesture(TapGesture().onEnded{
-                            let impactMedium = UIImpactFeedbackGenerator(style: .medium)
-                            impactMedium.impactOccurred()
-                        })
-                    }
-                }
-                
-                
-                
-                
-                // New creation
-                else {
-                    // Add
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        Button("Add") {
-                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                            let item = ListItem(isWant: isWant ?? true, favorite: favorited, title: titleTextField, price: price, itemImage: imageData, itemURL: itemURL, info: infoTextField)
-                            context.insert(item)
-                            dismiss()
-                        }
-                        .disabled(titleTextField.isEmpty)
-                    }
-                    //Cancel
-                    ToolbarItemGroup(placement: .topBarLeading) {
-                        Button("Cancel") {
-                            dismiss()
+                        
+                        // MARK: - Delete Button
+                        ToolbarItemGroup(placement: .topBarTrailing) {
+                            Button {
+                                showConfirmation = true
+                            } label: {
+                                Image(systemName: "trash")
+                                    .foregroundColor(userSettingsArray.first.map { Color(hex: $0.accentColor) } ?? .red)
+                                    .fontWeight(.medium)
+                            }
+                            .fontWeight(.heavy)
+                            .simultaneousGesture(TapGesture().onEnded{
+                                let impactMedium = UIImpactFeedbackGenerator(style: .medium)
+                                impactMedium.impactOccurred()
+                            })
                         }
                     }
-                }
-            }
-            .confirmationDialog("Are you sure you want to delete this \(item?.isWant ?? false ? "Want" : "Need")?", isPresented: $showConfirmation) {
-                Button("Delete it!", role: .destructive, action: {
-                    if let deletedItem = item {
-                        context.delete(deletedItem)
-                    } else {
-                        dismiss()
-                    }
-                })
-                
-                // This button overrides the default Cancel button.
-                Button("Mmm.. nevermind", role: .cancel, action: {})
-            }
-            message: {
-                Text("Careful! This action is permanent and cannot be undone.")
-            }
-//            .onTapGesture{
-//                additionalFocus = false
-//                titleFocus = false
-//                priceFocus = false
-//            }
-        } //: NavigationStack
-        .cornerRadius(17.5)
-        .overlay(
-            RoundedRectangle(cornerRadius: 17.5, style: .circular).stroke(Color(uiColor: .systemGray3), lineWidth: 1)
-        )
-        .frame(maxHeight: .infinity)
-        .padding(.horizontal, 15)
-        .padding(.bottom, 15)
-        .padding(.top, 1)
-        .accentColor(accentColor)
-        .onAppear() {
-            // Update with Pre-Existing Data
-            favorited = item?.favorite ?? false
-            titleTextField = item?.title ?? ""
-            price = item?.price ?? nil
-            infoTextField = item?.info ?? ""
-            itemURL = item?.itemURL ?? ""
             
-            if let userSettings = userSettingsArray.first {
-                accentColor = Color(hex: userSettings.accentColor) ?? .red
+                    // New creation
+                    else {
+        
+                        // MARK: - Cancel New Item Button
+                        ToolbarItemGroup(placement: .topBarLeading) {
+                            Button("Cancel") {
+                                dismiss()
+                            }
+                        }
+                        
+                        // MARK: - Add New Item Button
+                        ToolbarItemGroup(placement: .topBarTrailing) {
+                            Button("Add") {
+                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                                let item = ListItem(isWant: isWant ?? true, favorite: favorited, title: titleTextField, price: price, itemImage: imageData, itemURL: itemURL, info: infoTextField)
+                                context.insert(item)
+                                dismiss()
+                            }
+                            // don't allow empty title
+                            .disabled(titleTextField.isEmpty)
+                        }
+                    }
+                }
+                .confirmationDialog("Are you sure you want to delete this \(item?.isWant ?? false ? "Want" : "Need")?", isPresented: $showConfirmation) {
+                    Button("Delete it!", role: .destructive, action: {
+                        if let deletedItem = item {
+                            context.delete(deletedItem)
+                        } else {
+                            dismiss()
+                        }
+                    })
+                    
+                    // This button overrides the default Cancel button.
+                    Button("Mmm.. nevermind", role: .cancel, action: {})
+                }
+                message: {
+                    Text("Careful! This action is permanent and cannot be undone.")
+                }
+            } //: NavigationStack
+            .cornerRadius(17.5)
+            .overlay(
+                RoundedRectangle(cornerRadius: 17.5, style: .circular).stroke(Color(uiColor: .systemGray3), lineWidth: 1)
+            )
+            .frame(maxHeight: .infinity)
+            .padding(.horizontal, 15)
+            .padding(.bottom, 15)
+            .padding(.top, 1)
+            .accentColor(accentColor)
+            .onAppear() {
+                // Update with Pre-Existing Data
+                favorited = item?.favorite ?? false
+                titleTextField = item?.title ?? ""
+                price = item?.price ?? nil
+                infoTextField = item?.info ?? ""
+                itemURL = item?.itemURL ?? ""
+                
+                if let userSettings = userSettingsArray.first {
+                    accentColor = Color(hex: userSettings.accentColor) ?? .red
+                }
             }
-        }
     }
 }
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    
     let container = try! ModelContainer(for: ListItem.self, UserSettings.self, configurations: config)
     let item = ListItem(isWant: true, title: "Test Item")
     let userSettings =  UserSettings()

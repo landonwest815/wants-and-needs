@@ -18,15 +18,15 @@ struct ListsView: View {
     // Swift Data
     @Environment(\.modelContext) var context
     
-    // All Wants
+    // All Wants in Data
     @Query(filter: #Predicate<ListItem> { item in
         item.isWant == true
     },     sort: [SortDescriptor(\ListItem.favorite, order: .reverse)]) var wants: [ListItem]
     
-    // All Needs
+    // All Needs in Data
     @Query(filter: #Predicate<ListItem> { item in
         item.isWant == false
-    }) var needs: [ListItem]
+    },     sort: [SortDescriptor(\ListItem.favorite, order: .reverse)]) var needs: [ListItem]
     
     // User Settings
     @Query var userData: [UserSettings]
@@ -45,12 +45,11 @@ struct ListsView: View {
             // Grab the accent color from data
             let accent = Color(hex: userData.first?.accentColor ?? "#FFFFFF") ?? .pink
             
-            // MARK: - List of Items
             ScrollView {
                 
                 HStack(spacing: 15) {
                     
-                    // Wants "Tab"
+                    // MARK: - Wants Tab
                     VStack {
                         Image(systemName: "heart.fill")
                             .foregroundStyle(wantsSelected ? accent : .white)
@@ -73,6 +72,7 @@ struct ListsView: View {
                         impactMedium.impactOccurred()
                     })
                     
+                    // MARK: - Needs Tab
                     VStack {
                         Image(systemName: "brain.fill")
                             .foregroundStyle(!wantsSelected ? accent : .white)
@@ -98,7 +98,7 @@ struct ListsView: View {
                 }
                 .frame(width: 300, height:100)
                 
-                // List of Selected Items
+                // MARK: - List of Selected Items
                 VStack {
                     
                     // Check if there are any first
@@ -114,6 +114,7 @@ struct ListsView: View {
                             
                             ItemView(item: item)
                                 .frame(maxHeight: .infinity)
+                            
                             // animation + effects
                                 .transition(.move(edge: wantsSelected ? .leading : .trailing))
                                 .scrollTransition { content, phase in
@@ -131,7 +132,8 @@ struct ListsView: View {
             .frame(minWidth: 100, minHeight: 500)
             .scrollIndicators(.hidden)
             .toolbar {
-                // Add
+                
+                // MARK: - Item Addition (pencil)
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     // MARK: - Add Want
                     Button {
@@ -145,13 +147,14 @@ struct ListsView: View {
                     .sheet(isPresented: $isShowingSheet) {
                         ZStack {
                             Color.black.edgesIgnoringSafeArea(.all)
-                            CreationView(isWant: wantsSelected)
+                            ItemFormView(isWant: wantsSelected)
                         }
                             .presentationDragIndicator(.visible)
                             .presentationDetents([.fraction(0.9)])
                     }
                 }
-                // Cancel
+                
+                // MARK: - Settings (gear)
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     NavigationLink(destination: {
                         SettingsView()
@@ -169,6 +172,8 @@ struct ListsView: View {
             }
             .toolbarBackground(.hidden, for: .navigationBar)
         }
+        
+        // Allow for swipe gesture
         .gesture(DragGesture()
             .onEnded { value in
                 print("value ",value.translation.width)
@@ -188,7 +193,7 @@ struct ListsView: View {
     }
     
     
-    // from: https://stackoverflow.com/questions/59109138/how-to-implement-a-left-or-right-draggesture-that-trigger-a-switch-case-in-swi
+    // The following is from: https://stackoverflow.com/questions/59109138/how-to-implement-a-left-or-right-draggesture-that-trigger-a-switch-case-in-swi
     
     enum SwipeHVDirection: String {
         case left, right, up, down, none
@@ -209,10 +214,12 @@ struct ListsView: View {
         }
         return .none
     }
+    
 }
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    
     let container = try! ModelContainer(for: ListItem.self, UserSettings.self, configurations: config)
     let item =  ListItem(isWant: true, title: "basketball")
     container.mainContext.insert(item)
