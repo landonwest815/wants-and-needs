@@ -25,6 +25,7 @@ struct ContentView: View {
                 OnboardView()
             }
         }
+        .preferredColorScheme(.dark)
         .onAppear() {
             handleUserSettings()
         }

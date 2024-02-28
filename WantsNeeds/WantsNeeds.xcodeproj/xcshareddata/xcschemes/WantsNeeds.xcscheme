@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "91926A332B324F9D0096D1DE"
-               BuildableName = "Wants+Needs.app"
-               BlueprintName = "Wants+Needs"
-               ReferencedContainer = "container:Wants+Needs.xcodeproj">
+               BuildableName = "WantsNeeds.app"
+               BlueprintName = "WantsNeeds"
+               ReferencedContainer = "container:WantsNeeds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,9 +44,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "91926A332B324F9D0096D1DE"
-            BuildableName = "Wants+Needs.app"
-            BlueprintName = "Wants+Needs"
-            ReferencedContainer = "container:Wants+Needs.xcodeproj">
+            BuildableName = "WantsNeeds.app"
+            BlueprintName = "WantsNeeds"
+            ReferencedContainer = "container:WantsNeeds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -61,9 +61,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "91926A332B324F9D0096D1DE"
-            BuildableName = "Wants+Needs.app"
-            BlueprintName = "Wants+Needs"
-            ReferencedContainer = "container:Wants+Needs.xcodeproj">
+            BuildableName = "WantsNeeds.app"
+            BlueprintName = "WantsNeeds"
+            ReferencedContainer = "container:WantsNeeds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
