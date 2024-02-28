@@ -15,10 +15,15 @@ struct ContentView: View {
     // SwiftData
     @Environment(\.modelContext) var context
     @Query var userSettingsArray: [UserSettings]
-            
+                
     var body: some View {
+                
         ZStack {
             ListsView()
+                .blur(radius: userSettingsArray.first?.onboardUser ?? true ? 2.5 : 0)
+            if userSettingsArray.first?.onboardUser ?? true {
+                OnboardView()
+            }
         }
         .onAppear() {
             handleUserSettings()
@@ -36,14 +41,6 @@ struct ContentView: View {
             let newUserSettings = UserSettings()
             context.insert(newUserSettings)
         }
-        
-//        do {
-//            try context.delete(model: ListItem.self)
-//            try context.delete(model: UserSettings.self)
-//        } catch {
-//            print("error")
-//        }
-        
     }
 }
 

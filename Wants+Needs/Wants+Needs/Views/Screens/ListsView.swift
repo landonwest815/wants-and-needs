@@ -43,7 +43,7 @@ struct ListsView: View {
         NavigationStack {
             
             // Grab the accent color from data
-            let accent = Color(hex: userData.first?.accentColor ?? "#FFFFFF") ?? .pink
+            let accent = Color(hex: userData.first?.accentColor ?? "#ff0000") ?? .pink
             
             ScrollView {
                 

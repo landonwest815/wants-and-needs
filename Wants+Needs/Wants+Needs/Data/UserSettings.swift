@@ -17,10 +17,12 @@ import SwiftData
 class UserSettings {
     var accentColor: String // This is saved in a string due to it being a much better data type to store in SwiftData
     var appIcon: Int // This is only ever set to a 1 or 2. This allows us to easily set a variation of AppIcon based on the file naming I structured.
+    var onboardUser: Bool
     
     init() {
         // Default to these settings upon instantiation
         accentColor = "ff0000"
         appIcon = 1
+        onboardUser = true
     }
 }
