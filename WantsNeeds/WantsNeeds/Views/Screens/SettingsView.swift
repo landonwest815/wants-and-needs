@@ -156,6 +156,7 @@ struct SettingsView: View {
                 }
             }
         }
+        .preferredColorScheme(.dark)
         .navigationBarTitle("Settings")
         .onAppear() {
             pullFromUserSettings()

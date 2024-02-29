@@ -172,6 +172,7 @@ struct ListsView: View {
             }
             .toolbarBackground(.hidden, for: .navigationBar)
         }
+        .preferredColorScheme(.dark)
         
         // Allow for swipe gesture
         .gesture(DragGesture()

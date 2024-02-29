@@ -111,6 +111,7 @@ struct OnboardView: View {
                 .padding(25)
             
         }
+        .preferredColorScheme(.dark)
         .padding(.horizontal, 50)
         .background(Color(uiColor: .systemGray6))
         .cornerRadius(17.5)
