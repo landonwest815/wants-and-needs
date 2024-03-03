@@ -47,19 +47,19 @@ struct ListsView: View {
             
             ScrollView {
                 
-                HStack(spacing: 15) {
+                HStack(spacing: 30) {
                     
                     // MARK: - Wants Tab
                     VStack {
                         Image(systemName: "heart.fill")
                             .foregroundStyle(wantsSelected ? accent : .white)
                         Text("Wants")
+                            .font(.title)
                     }
                     .fontWeight(.bold)
                     .font(wantsSelected ? .title : .title2)
                     .opacity(wantsSelected ? 1.0 : 0.25)
                     .scaleEffect(wantsSelected ? 1.1 : 1.0)
-                    .frame(width: 100, height: 100)
                     
                     // animation + haptic
                     .onTapGesture {
@@ -77,12 +77,12 @@ struct ListsView: View {
                         Image(systemName: "brain.fill")
                             .foregroundStyle(!wantsSelected ? accent : .white)
                         Text("Needs")
+                            .font(.title)
                     }
                     .fontWeight(.bold)
                     .font(wantsSelected ? .title2 : .title)
                     .opacity(wantsSelected ? 0.25 : 1.0)
                     .scaleEffect(!wantsSelected ? 1.1 : 1.0)
-                    .frame(width: 100, height: 100)
                     
                     // animation + haptic
                     .onTapGesture {
